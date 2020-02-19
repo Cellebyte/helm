@@ -1,0 +1,12 @@
+{
+   "apiVersion": "v1",
+   "data": {
+      "grafana.ini": "W3NlcnZlcl0Kcm9vdF91cmwgPSBodHRwczovL2dyYWZhbmEuazhzLmNsdXN0ZXIubG9jYWwvCg=="
+   },
+   "kind": "Secret",
+   "metadata": {
+      "name": "grafana-config",
+      "namespace": "monitoring-system"
+   },
+   "type": "Opaque"
+}
