@@ -1,4 +1,4 @@
-# Schiff Monitoring Prometheus Operator.
+# Thanos Monitoring Prometheus Operator.
 
 ## Description
 
