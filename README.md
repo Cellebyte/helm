@@ -1,4 +1,4 @@
-# Thanos Monitoring Prometheus Operator.
+# Thanos flavoured Prometheus Operator.
 
 ## Description
 

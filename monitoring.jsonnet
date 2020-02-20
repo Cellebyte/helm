@@ -1,4 +1,4 @@
-local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
+local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 local secret = k.core.v1.secret;
 local ingress = k.networking.v1beta1.ingress;
 local service = k.core.v1.service;
@@ -13,8 +13,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 local prometheusPort = servicePort.newNamed('web', 9090, 'web');
 local thanosPort = servicePort.newNamed('http', 9090, 'http');
 local kp =
-  (import 'github.com/coreos/kube-prometheus/jsonnet/kube-prometheus/kube-prometheus.libsonnet') +
-  (import 'github.com/coreos/kube-prometheus/jsonnet/kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
+  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
   {
     _config+:: {
       namespace: 'monitoring-system',

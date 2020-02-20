@@ -7,8 +7,8 @@
           "subdir": "grafana"
         }
       },
-      "version": "539a90dbf63c812ad0194d8078dd776868a11c81",
-      "sum": "b8faWX1qqLGyN67sA36oRqYZ5HX+tHBRMPtrWRqIysE="
+      "version": "23c20eb8df5047c4735d2d341d4a7bab6f87870b",
+      "sum": "qT8vi60lo3D1NQuHtE4Swp+WGbBIeREN09gGyqGPa1k="
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "ca7a2927903bb9de434f68b1106c43eee81e57ee",
+      "version": "d6a3c995cf86b479cb5a44b48d000feb33e3d8f8",
       "sum": "Ko3qhNfC2vN/houLh6C0Ryacjv70gl0DVPGU/PQ4OD0="
     },
     {
@@ -78,8 +78,8 @@
           "subdir": ""
         }
       },
-      "version": "7f099821b29bb6f792c5a0833e74db142eba272a",
-      "sum": "ELEzQQcNRLX15CRhASw4eZaeGsvSBCHvYQtgjnXOoE8="
+      "version": "8e370046348970ac68bd0fcfd5a15184a6cbdf51",
+      "sum": "idOSRFQK/EFGOE+c13fNAN4ZaW7HAJRGlfHtal0hfWo="
     },
     {
       "source": {
@@ -88,7 +88,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "7f099821b29bb6f792c5a0833e74db142eba272a",
+      "version": "8e370046348970ac68bd0fcfd5a15184a6cbdf51",
       "sum": "VhgBM39yv0f4bKv8VfGg4FXkg573evGDRalip9ypKbc="
     },
     {
@@ -108,7 +108,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "84c644609403850e1cba92d069e8df507766782a",
+      "version": "3e1b0f1bee40af140c1349ab401392882ed658de",
       "sum": "7vEamDTP9AApeiF4Zu9ZyXzDIs3rYHzwf9k7g8X+wsg="
     },
     {
@@ -118,7 +118,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "fe76ccbfe3bb2a7549bbb1454c3a51ff4544c6d6",
+      "version": "87971fff907386ff2ab9f3c92411b7190e5d809c",
       "sum": "5EUgr6Spr1zNR8Y2/NevjvEkGV9WMvKo6nEScNER1Lc=",
       "name": "prometheus"
     }

@@ -345,6 +345,32 @@
             ]
          },
          {
+            "name": "kubelet.rules",
+            "rules": [
+               {
+                  "expr": "histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (instance, le) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\"})\n",
+                  "labels": {
+                     "quantile": "0.99"
+                  },
+                  "record": "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
+               },
+               {
+                  "expr": "histogram_quantile(0.9, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (instance, le) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\"})\n",
+                  "labels": {
+                     "quantile": "0.9"
+                  },
+                  "record": "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
+               },
+               {
+                  "expr": "histogram_quantile(0.5, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (instance, le) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\"})\n",
+                  "labels": {
+                     "quantile": "0.5"
+                  },
+                  "record": "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
+               }
+            ]
+         },
+         {
             "name": "kube-prometheus-node-recording.rules",
             "rules": [
                {
@@ -557,7 +583,7 @@
                      "message": "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than 15 minutes.",
                      "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentreplicasmismatch"
                   },
-                  "expr": "kube_deployment_spec_replicas{job=\"kube-state-metrics\"}\n  !=\nkube_deployment_status_replicas_available{job=\"kube-state-metrics\"}\n",
+                  "expr": "(\n  kube_deployment_spec_replicas{job=\"kube-state-metrics\"}\n    !=\n  kube_deployment_status_replicas_available{job=\"kube-state-metrics\"}\n) and (\n  changes(kube_deployment_status_replicas_updated{job=\"kube-state-metrics\"}[5m])\n    ==\n  0\n)\n",
                   "for": "15m",
                   "labels": {
                      "severity": "critical"
@@ -569,7 +595,7 @@
                      "message": "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched the expected number of replicas for longer than 15 minutes.",
                      "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetreplicasmismatch"
                   },
-                  "expr": "kube_statefulset_status_replicas_ready{job=\"kube-state-metrics\"}\n  !=\nkube_statefulset_status_replicas{job=\"kube-state-metrics\"}\n",
+                  "expr": "(\n  kube_statefulset_status_replicas_ready{job=\"kube-state-metrics\"}\n    !=\n  kube_statefulset_status_replicas{job=\"kube-state-metrics\"}\n) and (\n  changes(kube_statefulset_status_replicas_updated{job=\"kube-state-metrics\"}[5m])\n    ==\n  0\n)\n",
                   "for": "15m",
                   "labels": {
                      "severity": "critical"
@@ -981,6 +1007,29 @@
                   }
                },
                {
+                  "alert": "AggregatedAPIErrors",
+                  "annotations": {
+                     "message": "An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has reported errors. The number of errors have increased for it in the past five minutes. High values indicate that the availability of the service changes too often.",
+                     "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapierrors"
+                  },
+                  "expr": "sum by(name, namespace)(increase(aggregator_unavailable_apiservice_count[5m])) > 2\n",
+                  "labels": {
+                     "severity": "warning"
+                  }
+               },
+               {
+                  "alert": "AggregatedAPIDown",
+                  "annotations": {
+                     "message": "An aggregated API {{ $labels.name }}/{{ $labels.namespace }} is down. It has not been available at least for the past five minutes.",
+                     "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapidown"
+                  },
+                  "expr": "sum by(name, namespace)(sum_over_time(aggregator_unavailable_apiservice[5m])) > 0\n",
+                  "for": "5m",
+                  "labels": {
+                     "severity": "warning"
+                  }
+               },
+               {
                   "alert": "KubeAPIDown",
                   "annotations": {
                      "message": "KubeAPI has disappeared from Prometheus target discovery.",
@@ -1029,6 +1078,30 @@
                   },
                   "expr": "max(max(kubelet_running_pod_count{job=\"kubelet\"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\"}) by(node) / max(kube_node_status_capacity_pods{job=\"kube-state-metrics\"}) by(node) > 0.95\n",
                   "for": "15m",
+                  "labels": {
+                     "severity": "warning"
+                  }
+               },
+               {
+                  "alert": "KubeNodeReadinessFlapping",
+                  "annotations": {
+                     "message": "The readiness status of node {{ $labels.node }} has changed {{ $value }} times in the last 15 minutes.",
+                     "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodereadinessflapping"
+                  },
+                  "expr": "sum(changes(kube_node_status_condition{status=\"true\",condition=\"Ready\"}[15m])) by (node) > 2\n",
+                  "for": "15m",
+                  "labels": {
+                     "severity": "warning"
+                  }
+               },
+               {
+                  "alert": "KubeletPlegDurationHigh",
+                  "annotations": {
+                     "message": "The Kubelet Pod Lifecycle Event Generator has a 99th percentile duration of {{ $value }} seconds on node {{ $labels.node }}.",
+                     "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletplegdurationhigh"
+                  },
+                  "expr": "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile{quantile=\"0.99\"} >= 10\n",
+                  "for": "5m",
                   "labels": {
                      "severity": "warning"
                   }

@@ -12,6 +12,6 @@ rm -rf manifests
 mkdir -p manifests/setup
 
                                                # optional, but we would like to generate yaml, not json
-jsonnet -J vendor -m manifests "schiff-monitoring.jsonnet" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml;'
+~/go/bin/jsonnet -J vendor -m manifests "monitoring.jsonnet" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml;'
 # Hotfix to delete compiled configuration
 rm -rf manifests/alertmanager-config*
