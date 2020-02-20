@@ -62,8 +62,6 @@ local kp =
       prometheus+: {
         spec+: {
           thanos+: {
-            version: $._config.versions.thanos,
-            baseImage: $._config.imageRepos.thanos,
             // make this field hidden so it is not rendered
             objectStorageConfig:: null,
           },
