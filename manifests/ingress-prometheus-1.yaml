@@ -9,7 +9,7 @@ metadata:
   namespace: monitoring-system
 spec:
   rules:
-  - host: prometheus-1.k8s.cluster.local
+  - host: prometheus-2.k8s.cluster.local
     http:
       paths:
       - backend:

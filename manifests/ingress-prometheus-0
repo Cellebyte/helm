@@ -7,18 +7,18 @@
          "nginx.ingress.kubernetes.io/auth-secret": "basic-auth",
          "nginx.ingress.kubernetes.io/auth-type": "basic"
       },
-      "name": "prometheus-k8s-2",
+      "name": "prometheus-k8s-0",
       "namespace": "monitoring-system"
    },
    "spec": {
       "rules": [
          {
-            "host": "prometheus-2.k8s.cluster.local",
+            "host": "prometheus-1.k8s.cluster.local",
             "http": {
                "paths": [
                   {
                      "backend": {
-                        "serviceName": "prometheus-k8s-2",
+                        "serviceName": "prometheus-k8s-0",
                         "servicePort": "web"
                      }
                   }

@@ -155,22 +155,22 @@ local kp =
           ),
         ),
       // prometheus federation setup with an ingress per prometheus instance
-      'prometheus-service-1':
+      'prometheus-service-0':
         service.new(
-          $.prometheus.service.metadata.name + '-1',
+          $.prometheus.service.metadata.name + '-0',
           {
             app: 'prometheus',
             prometheus: $._config.prometheus.name,
-            "statefulset.kubernetes.io/pod-name": $.prometheus.service.metadata.name + '-1',
+            "statefulset.kubernetes.io/pod-name": $.prometheus.service.metadata.name + '-0',
           },
           prometheusPort
         ) +
         service.mixin.spec.withSessionAffinity('ClientIP') +
         service.mixin.metadata.withNamespace($._config.namespace) +
         service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.name }),
-      'prometheus-1':
+      'prometheus-0':
         ingress.new() +
-        ingress.mixin.metadata.withName($.prometheus.service.metadata.name + '-1') +
+        ingress.mixin.metadata.withName($.prometheus.service.metadata.name + '-0') +
         ingress.mixin.metadata.withNamespace($._config.namespace) +
         ingress.mixin.metadata.withAnnotations({
           'nginx.ingress.kubernetes.io/auth-type': 'basic',
@@ -182,26 +182,26 @@ local kp =
           ingressRule.withHost('prometheus-1.' + $._config.externalBaseFqdn) +
           ingressRule.mixin.http.withPaths(
             httpIngressPath.new() +
-            httpIngressPath.mixin.backend.withServiceName($.prometheus.service.metadata.name + '-1') +
+            httpIngressPath.mixin.backend.withServiceName($.prometheus.service.metadata.name + '-0') +
             httpIngressPath.mixin.backend.withServicePort('web')
           ),
         ),
-      'prometheus-service-2':
+      'prometheus-service-1':
         service.new(
-          $.prometheus.service.metadata.name + '-2',
+          $.prometheus.service.metadata.name + '-1',
           {
             app: 'prometheus',
             prometheus: $.prometheus.name,
-            "statefulset.kubernetes.io/pod-name": $.prometheus.service.metadata.name + '-2',
+            "statefulset.kubernetes.io/pod-name": $.prometheus.service.metadata.name + '-1',
           },
           prometheusPort
         ) +
         service.mixin.spec.withSessionAffinity('ClientIP') +
         service.mixin.metadata.withNamespace($._config.namespace) +
         service.mixin.metadata.withLabels({ prometheus: $.prometheus.name }),
-      'prometheus-2':
+      'prometheus-1':
         ingress.new() +
-        ingress.mixin.metadata.withName($.prometheus.service.metadata.name + '-2') +
+        ingress.mixin.metadata.withName($.prometheus.service.metadata.name + '-1') +
         ingress.mixin.metadata.withNamespace($._config.namespace) +
         ingress.mixin.metadata.withAnnotations({
           'nginx.ingress.kubernetes.io/auth-type': 'basic',
@@ -213,7 +213,7 @@ local kp =
           ingressRule.withHost('prometheus-2.' + $._config.externalBaseFqdn) +
           ingressRule.mixin.http.withPaths(
             httpIngressPath.new() +
-            httpIngressPath.mixin.backend.withServiceName($.prometheus.service.metadata.name + '-2') +
+            httpIngressPath.mixin.backend.withServiceName($.prometheus.service.metadata.name + '-1') +
             httpIngressPath.mixin.backend.withServicePort('web')
           ),
         ),

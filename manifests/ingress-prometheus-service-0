@@ -5,7 +5,7 @@
       "labels": {
          "prometheus": "k8s"
       },
-      "name": "prometheus-k8s-2",
+      "name": "prometheus-k8s-0",
       "namespace": "monitoring-system"
    },
    "spec": {
@@ -19,7 +19,7 @@
       "selector": {
          "app": "prometheus",
          "prometheus": "k8s",
-         "statefulset.kubernetes.io/pod-name": "prometheus-k8s-2"
+         "statefulset.kubernetes.io/pod-name": "prometheus-k8s-0"
       },
       "sessionAffinity": "ClientIP"
    }
