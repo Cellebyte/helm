@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: prometheus-operator
+    app.kubernetes.io/name: prometheus-operator
+  name: prometheus-operator-prometheus-0
+  namespace: monitoring-system
+spec:
+  ports:
+  - name: http
+    port: 9090
+    targetPort: http
+  selector:
+    app: prometheus
+    prometheus: "prometheus-operator-prometheus"
+    statefulset.kubernetes.io/pod-name: prometheus-prometheus-operator-prometheus-0
+  sessionAffinity: ClientIP
+  type: ClusterIP

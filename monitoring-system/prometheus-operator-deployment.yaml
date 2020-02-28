@@ -1,0 +1,378 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prometheus-operator
+  namespace: monitoring-system
+spec:
+  skipCRDs: false
+  chart:
+    repository: https://charts.bitnami.com/bitnami
+    name: prometheus-operator
+    version: 0.12.6
+  values:
+    global:
+      labels: {}
+    rbac:
+      create: true
+      apiVersion: v1beta1
+      pspEnabled: true
+    operator:
+      enabled: true
+      image:
+        registry: quay.io
+        repository: coreos/prometheus-operator
+        tag: v0.36.0
+        pullPolicy: IfNotPresent
+      serviceAccount:
+        create: true
+      securityContext:
+        enabled: true
+        runAsUser: 1001
+        fsGroup: 1001
+      service:
+        type: ClusterIP
+        port: 8080
+        annotations: {}
+      createCustomResource: true
+      ## Prometheus Operator CRD deletion policy
+      ## ref: https://v3.helm.sh/docs/topics/charts_hooks/
+      ##
+      # customResourceDeletePolicy: before-hook-creation
+      serviceMonitor:
+        enabled: true
+        interval: 15s
+
+      resources:
+        limits:
+          cpu: 200m
+          memory: 200Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+
+      livenessProbe:
+        initialDelaySeconds: 120
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 6
+        successThreshold: 1
+
+      readinessProbe:
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 6
+        successThreshold: 1
+
+      logLevel: info
+      logFormat: logfmt
+
+      ## If true, the operator will create and maintain a service for scraping kubelets
+      ##
+      kubeletService:
+        enabled: true
+        namespace: kube-system
+
+      ## Configmap-reload image to use for reloading configmaps
+      ##
+      configmapReload:
+        image:
+          registry: quay.io
+          repository: coreos/configmap-reload
+          tag: v0.0.1
+      prometheusConfigReloader:
+        image:
+          registry: quay.io
+          repository: coreos/prometheus-config-reloader
+          tag: v0.36.0
+    prometheus:
+      enabled: true
+
+      image:
+        registry: quay.io
+        repository: prometheus/prometheus
+        tag: v2.16.0
+
+      serviceAccount:
+        create: true
+
+      securityContext:
+        enabled: true
+        runAsUser: 1001
+        fsGroup: 1001
+
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+
+      service:
+        type: ClusterIP
+        port: 9090
+
+      serviceMonitor:
+        enabled: true
+        interval: 15s
+
+      resources:
+        requests:
+          memory: 400Mi
+
+      listenLocal: true
+
+      externalLabels:
+        customer: "<customer>"
+        cluster: "<cluster>"
+
+      ## ConfigMaps that should be mounted into the Prometheus Pods
+      ##
+      configMaps: []
+
+      nodeSelector:
+        kubernetes.io/os: linux
+      ## The query command line flags when starting Prometheus
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#queryspec
+      ##
+      querySpec: {}
+
+      ## Namespaces to be selected for PrometheusRules discovery
+      ## See https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#namespaceselector for usage
+      ##
+      ruleNamespaceSelector: {}
+
+      ## PrometheusRules to be selected for target discovery.
+      ## If {}, select all ServiceMonitors
+      ##
+      ruleSelector:
+        matchLabels:
+          prometheus: k8s
+          role: alert-rules
+
+      ## ServiceMonitors to be selected for target discovery.
+      ## If {}, select all ServiceMonitors
+      ##
+      serviceMonitorSelector: {}
+        # matchLabels:
+        #   foo: bar
+
+      ## Namespaces to be selected for ServiceMonitor discovery.
+      ## See https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#namespaceselector for usage
+      ##
+      serviceMonitorNamespaceSelector: {}
+
+      ## How long to retain metrics
+      ##
+      retention: 20d
+
+      ## Maximum size of metrics
+      ##
+      ## retentionSize: ""
+
+      ## Enable compression of the write-ahead log using Snappy.
+      ##
+      walCompression: false
+
+      ## Desired number of Prometheus nodes
+      ##
+      replicaCount: 2
+
+      ## Log level for Prometheus
+      ##
+      logLevel: info
+
+      ## Log format for Prometheus
+      ##
+      logFormat: logfmt
+
+      ## Standard object’s metadata
+      ## ref: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata
+      ##
+      podMetadata: {}
+      # labels:
+      #   app: prometheus
+      #   k8s-app: prometheus
+
+      ## The remote_read spec configuration for Prometheus.
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#remotereadspec
+      ##
+      remoteRead: []
+      # - url: http://remote1/read
+
+      ## The remote_write spec configuration for Prometheus.
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#remotewritespec
+      ##
+      remoteWrite: []
+      # - url: http://remote1/push
+
+      ## Prometheus StorageSpec for persistent data
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
+      ##
+      storageSpec:
+        volumeClaimTemplate:
+          apiVersion: v1
+          kind: PersistentVolumeClaim
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 50Gi
+            storageClassName: "<storage_class_name>"
+
+      ## Enable additional scrape configs that are managed externally to this chart
+      ##
+      additionalScrapeConfigsExternal: false
+
+      ## Thanos sidecar container configuration
+      ##
+      thanos:
+        create: true
+        image:
+          registry: quay.io
+          repository: thanos/thanos
+          tag: v0.10.1
+          pullPolicy: IfNotPresent
+        service:
+          type: ClusterIP
+          port: 10901
+
+    alertmanager:
+      enabled: true
+      image:
+        registry: quay.io
+        repository: prometheus/alertmanager
+        tag: v0.20.0
+
+      serviceAccount:
+        create: true
+
+      securityContext:
+        enabled: true
+        runAsUser: 1001
+        fsGroup: 1001
+
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+
+      service:
+        type: ClusterIP
+        port: 9093
+
+      serviceMonitor:
+        enabled: true
+        interval: 15s
+
+      ingress:
+        enabled: false
+        certManager: false
+        annotations: {}
+        hosts:
+        - name: alertmanager.k8s.cluster.local
+          path: /
+
+        ## The tls configuration for the ingress
+        ## see: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+        ## tls:
+        ## - hosts:
+        ##     - alertmanager.local
+        ##   secretName: alertmanager.local-tls
+
+
+
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          group_by: ['job']
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+          receiver: 'null'
+          routes:
+          - match:
+              alertname: Watchdog
+            receiver: 'null'
+        receivers:
+        - name: 'null'
+
+      replicaCount: 3
+
+      logLevel: info
+
+      logFormat: logfmt
+
+      retention: 120h
+
+      ## Alertmanager StorageSpec for persistent data
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
+      ##
+      storageSpec:
+        volumeClaimTemplate:
+          ## after https://github.com/coreos/prometheus-operator/pull/3049 gets introduced
+          ## in a new version these two lines can be readded
+          # apiVersion: v1
+          # kind: PersistentVolumeClaim
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 2Gi
+            storageClassName: "<storage_class_name>"
+
+      listenLocal: false
+
+    ## Exporters
+    exporters:
+      node-exporter:
+        enabled: true
+
+      kube-state-metrics:
+        enabled: true
+
+    ## Node Exporter deployment configuration
+    node-exporter:
+      image:
+        registry: quay.io
+        repository: prometheus/node-exporter
+        tag: v0.18.1
+
+      service:
+        labels:
+          jobLabel: node-exporter
+
+      serviceMonitor:
+        enabled: true
+        jobLabel: jobLabel
+
+      extraArgs:
+        collector.filesystem.ignored-mount-points: "^/(dev|proc|sys|var/lib/docker/.+)($|/)"
+        collector.filesystem.ignored-fs-types: "^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$"
+
+    kube-state-metrics:
+      image:
+        registry: quay.io
+        repository: coreos/kube-state-metrics
+        tag: v1.9.5
+      replicaCount: 2
+      serviceMonitor:
+        enabled: true
+
+    ## Component scraping the kube-apiserver
+    kubeApiServer:
+      ## Create a ServiceMonitor to scrape kube-apiserver service
+      enabled: true
+      serviceMonitor:
+        interval: 15s
+
+    # Component scraping for kubelet and kubelet hosted cAdvisor
+    kubelet:
+      ## Create a ServiceMonitor to scrape kubelet service
+      enabled: true
+
+      ## Namespace where kubelet service is deployed
+      namespace: kube-system
+
+      serviceMonitor:
+        https: true
+        interval: 15s
