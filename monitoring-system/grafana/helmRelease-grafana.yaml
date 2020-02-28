@@ -15,7 +15,7 @@ spec:
       tag: 6.6.2
       pullPolicy: IfNotPresent
 
-    replicaCount: 2
+    replicaCount: 1
 
     updateStrategy:
       type: RollingUpdate
@@ -63,9 +63,8 @@ spec:
     ## It is needed to create a configmap or a secret containing the grafana.ini and custom.ini files.
     ##
     config:
-      useGrafanaIniFile: false
-      grafanaIniConfigMap:
-      grafanaIniSecret:
+      useGrafanaIniFile: true
+      grafanaIniSecret: grafana-config
       useCustomIniFile: false
       customIniConfigMap:
       customIniSecret:
@@ -144,7 +143,7 @@ spec:
     ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     ##
     persistence:
-      enabled: true
+      enabled: false
       ## wordpress data Persistent Volume Storage Class
       ## If defined, storageClassName: <storageClass>
       ## If set to "-", storageClassName: "", which disables dynamic provisioning

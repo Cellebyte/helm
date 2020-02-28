@@ -206,17 +206,19 @@ spec:
       ## Prometheus StorageSpec for persistent data
       ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
       ##
-      storageSpec:
-        volumeClaimTemplate:
-          apiVersion: v1
-          kind: PersistentVolumeClaim
-          spec:
-            accessModes:
-            - ReadWriteOnce
-            resources:
-              requests:
-                storage: 50Gi
-            storageClassName: "<storage_class_name>"
+      storageSpec: 
+        emptyDir:
+          medium: ""
+        # volumeClaimTemplate:
+        #   apiVersion: v1
+        #   kind: PersistentVolumeClaim
+        #   spec:
+        #     accessModes:
+        #     - ReadWriteOnce
+        #     resources:
+        #       requests:
+        #         storage: 50Gi
+        #     storageClassName: "<storage_class_name>"
 
       ## Enable additional scrape configs that are managed externally to this chart
       ##
@@ -307,18 +309,20 @@ spec:
       ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
       ##
       storageSpec:
-        volumeClaimTemplate:
+        emptyDir:
+          medium: ""
+        # volumeClaimTemplate:
           ## after https://github.com/coreos/prometheus-operator/pull/3049 gets introduced
           ## in a new version these two lines can be readded
           # apiVersion: v1
           # kind: PersistentVolumeClaim
-          spec:
-            accessModes:
-            - ReadWriteOnce
-            resources:
-              requests:
-                storage: 2Gi
-            storageClassName: "<storage_class_name>"
+          # spec:
+          #   accessModes:
+          #   - ReadWriteOnce
+          #   resources:
+          #     requests:
+          #       storage: 2Gi
+          #   storageClassName: "<storage_class_name>"
 
       listenLocal: false
 
