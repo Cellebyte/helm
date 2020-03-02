@@ -1,0 +1,295 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: monitoring-system
+spec:
+  chart:
+    repository: https://charts.bitnami.com/bitnami
+    name: grafana
+    version: 1.2.8
+  values:
+    image:
+      registry: docker.io
+      repository: grafana/grafana
+      tag: 6.6.2
+      pullPolicy: IfNotPresent
+
+    replicaCount: 1
+
+    updateStrategy:
+      type: RollingUpdate
+
+    admin:
+      user: "admin"
+      password: "admin"
+
+    ## Grafana plugins that will be installed
+    ## Specify plugins as a list separated by commas ( you will need to scape them when specifying from command line )
+    ## Example:
+    ## plugins: grafana-kubernetes-app,grafana-example-app
+    ##
+    # plugins:
+
+    ## Ldap configuration for Grafana
+    ##
+    ldap:
+      enabled: false
+      allowSignUp: false
+      ## configMap with LDAP configuration file (ldap.toml)
+      # configMapName:
+
+    ## An array to add extra env vars
+    ## For example:
+    ## extraEnvVars:
+    ##  - name: GF_DEFAULT_INSTANCE_NAME
+    ##    value: my-instance
+    ##
+    extraEnvVars: {}
+
+    ## An array to add extra configmaps:
+    ## For example:
+    ## extraConfigmaps:
+    ##   - name: myconfigmap
+    ##     mountPath: /opt/bitnami/desired-path
+    ##     subPath: file-name.extension (optional)
+    ##     readOnly: true
+    ##
+    extraConfigmaps: {
+
+    }
+
+    ## Parameters to override the default grafana.ini and custom.ini files.
+    ## It is needed to create a configmap or a secret containing the grafana.ini and custom.ini files.
+    ##
+    config:
+      useGrafanaIniFile: true
+      grafanaIniSecret: grafana-config
+      useCustomIniFile: false
+      customIniConfigMap:
+      customIniSecret:
+
+    ## Create dasboard provider to load dashboards, a default one is created to load
+    ## dashboards from "/opt/bitnami/grafana/dashboards"
+    ##
+    dashboardsProvider:
+      enabled: true
+      ## ConfigMap with a custom provider file.
+      ## Important to set the Path to "/opt/bitnami/grafana/dashboards"
+      # configMapName:
+
+    ## Create dashboards from a custom configMap that contains the file.
+    ## They will be mounted by the default dashboard provider if it is enabled
+    ## one file per configmap.
+    ## Use an array with the configMap names.
+    dashboardsConfigMaps:
+    - configMapName: grafana-dashboard-etcd
+      fileName: etcd.json
+    - configMapName: grafana-dashboard-apiserver
+      fileName: apiserver.json
+    - configMapName: grafana-dashboard-cluster-total
+      fileName: cluster-total.json
+    - configMapName: grafana-dashboard-controller-manager
+      fileName: controller-manager.json
+    - configMapName: grafana-dashboard-k8s-resources-cluster
+      fileName: k8s-resources-cluster.json
+    - configMapName: grafana-dashboard-k8s-resources-namespace
+      fileName: k8s-resources-namespace.json
+    - configMapName: grafana-dashboard-k8s-resources-node
+      fileName: k8s-resources-node.json
+    - configMapName: grafana-dashboard-k8s-resources-pod
+      fileName: k8s-resources-pod.json
+    - configMapName: grafana-dashboard-k8s-resources-workload
+      fileName: k8s-resources-workload.json
+    - configMapName: grafana-dashboard-k8s-resources-workloads-namespace
+      fileName: k8s-resources-workloads-namespace.json
+    - configMapName: grafana-dashboard-kubelet
+      fileName: kubelet.json
+    - configMapName: grafana-dashboard-namespace-by-pod
+      fileName: namespace-by-pod.json
+    - configMapName: grafana-dashboard-namespace-by-workload
+      fileName: namespace-by-workload.json
+    - configMapName: grafana-dashboard-node-cluster-rsrc-use
+      fileName: node-cluster-rsrc-use.json
+    - configMapName: grafana-dashboard-node-rsrc-use
+      fileName: node-rsrc-use.json
+    - configMapName: grafana-dashboard-nodes
+      fileName: nodes.json
+    - configMapName: grafana-dashboard-persistentvolumesusage
+      fileName: persistentvolumesusage.json
+    - configMapName: grafana-dashboard-pod-total
+      fileName: pod-total.json
+    - configMapName: grafana-dashboard-pods
+      fileName: pods.json
+    - configMapName: grafana-dashboard-prometheus-remote-write
+      fileName: prometheus-remote-write.json
+    - configMapName: grafana-dashboard-prometheus
+      fileName: prometheus.json
+    - configMapName: grafana-dashboard-proxy
+      fileName: proxy.json
+    - configMapName: grafana-dashboard-scheduler
+      fileName: scheduler.json
+    - configMapName: grafana-dashboard-statefulset
+      fileName: statefulset.json
+    - configMapName: grafana-dashboard-workload-total
+      fileName: workload-total.json
+    ## Create datasources from a custom secret
+    ## The secret must contain the files
+    ##
+    datasources:
+      secretName: grafana-datasources
+
+    ## Enable persistence using Persistent Volume Claims
+    ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    persistence:
+      enabled: false
+      ## wordpress data Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      # storageClass: "-"
+      ##
+      ## If you want to reuse an existing claim, you can pass the name of the PVC using
+      ## the existingClaim variable
+      # existingClaim: your-claim
+      accessMode: ReadWriteOnce
+      size: 10Gi
+
+    ## Grafana containers' liveness and readiness probes
+    ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+    ##
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    ## Service parameters
+    ##
+    service:
+      type: ClusterIP
+      port: 3000
+      annotations: {}
+
+    ## Configure the ingress resource that allows you to access the
+    ## Grafana web. Set up the URL
+    ## ref: http://kubernetes.io/docs/user-guide/ingress/
+    ##
+    ingress:
+      ## Set to true to enable ingress record generation
+      enabled: true
+
+      ## Set this to true in order to add the corresponding annotations for cert-manager
+      certManager: false
+
+      ## Ingress annotations done as key:value pairs
+      ## For a full list of possible ingress annotations, please see
+      ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+      ##
+      ## If tls is set to true, annotation ingress.kubernetes.io/secure-backends: "true" will automatically be set
+      ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
+      # annotations:
+      #   kubernetes.io/ingress.class: nginx
+
+      ## The list of hostnames to be covered with this ingress record.
+      ## Most likely this will be just one host, but in the event more hosts are needed, this is an array
+      hosts:
+        - name: grafana.k8s.cluster.local
+          paths: ["/"]
+          ## Set this to true in order to enable TLS on the ingress record
+          tls: false
+          tlsHosts:
+          - grafana.k8s.cluster.local
+          tlsSecret: grafana.local-tls
+
+    ## SecurityContext configuration
+    ##
+    securityContext:
+      enabled: true
+      runAsUser: 1001
+      fsGroup: 1001
+      runAsNonRoot: true
+
+    ## Grafana containers' resource requests and limits
+    ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+    ##
+    resources:
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      limits: {}
+      #   cpu: 500m
+      #   memory: 1Gi
+      requests: {}
+      #   cpu: 250m
+      #   memory: 256Mi
+
+    ## Node labels for pod assignment
+    ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+    ##
+    nodeSelector: {}
+
+    ## Tolerations for pod assignment
+    ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+    ##
+    tolerations: []
+
+    ## Affinity for pod assignment
+    ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+    ##
+    affinity: {}
+
+    ## Pod annotations
+    ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+    ##
+    podAnnotations: {}
+
+    ## Prometheus metrics
+    ##
+    metrics:
+      enabled: true
+
+      ## Prometheus Operator ServiceMonitor configuration
+      ##
+      service:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "3000"
+          prometheus.io/path: "/metrics"
+
+      serviceMonitor:
+        enabled: true
+        ## Namespace in which Prometheus is running
+        ##
+        namespace: monitoring-system
+
+        ## Interval at which metrics should be scraped.
+        ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+        ##
+        interval: 15s
+
+        ## Timeout after which the scrape is ended
+        ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+        ##
+        scrapeTimeout: 15s
+
+        ## ServiceMonitor selector labels
+        ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
+        ##
+        # selector:
+        #   prometheus: my-prometheus
+---

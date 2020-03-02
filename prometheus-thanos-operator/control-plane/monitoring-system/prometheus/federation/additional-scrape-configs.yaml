@@ -1,0 +1,12 @@
+
+# this file was generated with the following command:
+# $ kubectl create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml --dry-run -oyaml > additional-scrape-configs.yaml
+apiVersion: v1
+data:
+  additional-scrape-configs.yaml: ""
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: prometheus-operator-prometheus-scrape-config
+
+# TODO: AutoGenerate this stuff from every tenant.
