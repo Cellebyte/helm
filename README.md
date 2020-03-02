@@ -37,3 +37,57 @@ To change some configuration of this project look into the config section.
 
 
 ```
+
+
+## The helm chart stuff
+
+The current diff between the control-plane and the tenant clusters.
+
+```txt
+├── .
+└── prometheus-thanos-operator
+    ├── control-plane
+    │   └── monitoring-system
+    │       ├── grafana
+    │       │   ├── configuration
+    │       │   └── dashboards
+    │       ├── local_debugging_helm-values
+    │       └── prometheus
+    │           ├── federation
+    │           └── rules
+    ├── local_debugging_helm-values
+    └── tenant
+        └── monitoring-system
+            ├── grafana
+            │   ├── configuration
+            │   └── dashboards
+            └── prometheus
+                ├── federation
+                └── rules
+ 
+```
+
+
+
+```txt
+### only in the control-plane cluster ###
+Only in prometheus-thanos-operator/control-plane/monitoring-system/prometheus/federation: additional-scrape-configs.yaml
+
+### only in the tenant clusters ###
+Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-0.yaml
+Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-1.yaml
+Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-service-0.yaml
+Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-service-1.yaml
+Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: secret-ingress-prometheus.yaml
+
+
+123c123,124
+<         environment: "production"
+---
+>         customer: "<customer>"
+>         cluster: "<cluster>"
+224c225
+<       additionalScrapeConfigsExternal: true
+---
+>       additionalScrapeConfigsExternal: false
+```

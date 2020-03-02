@@ -120,7 +120,7 @@ spec:
       listenLocal: true
 
       externalLabels:
-         environment: "production"
+        environment: "production"
 
       ## ConfigMaps that should be mounted into the Prometheus Pods
       ##
