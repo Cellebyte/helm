@@ -388,7 +388,7 @@ prometheus_operator:
       https: true
       interval: 15s
 
-thanos:
+thanos_query:
   enabled: true
   image:
     registry: quay.io
@@ -404,7 +404,7 @@ thanos:
       enabled: true
       ## Sidecars service name to discover them using DNS discovery
       ##
-      sidecarsService: prometheus-operator-prometheus-thanos
+      sidecarsService: thanos-prometheus-operator-prometheus-thanos
       ## Sidecars namespace to discover them using DNS discovery
       ##
       sidecarsNamespace: monitoring-system
