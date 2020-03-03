@@ -1,35 +1,33 @@
-{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") ( .Values.federation.ingress) -}}
-{{ $count := .Values.count | int }}
-{{- range $i, $e := until $count -}}
+{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") -}}
+{{- $root := . -}}
+{{- $count := int .Values.prometheus_operator.prometheus.replicaCount -}}
+{{- range $i := until $count }}
+{{- $data := dict "root" $root "extra" $i }}
 ---
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
-  name: {{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
+  name: {{ include "thanos-prometheus-operator.serviceName" $data }}
   labels:
-    {{- include "thanos-prometheus-operator.labels" . | nindent 4 }}
-  {{- with .Values.federation.ingress.annotations }}
+    {{- include "thanos-prometheus-operator.labels" $root | nindent 4 }}
+  {{- with $root.Values.federation.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.federation.ingress.tls }}
+{{- if $root.Values.federation.ingress.tls }}
   tls:
     - hosts:
-        - "prometheus-{{ $i }}.{{ .Values.federation.baseFQDN }}"
+        - {{ include "thanos-prometheus-operator.hostname" $data }}
       secretName: {{ $i }}-prometheus-tls-secret
 {{- end }}
   rules:
-    - host: "prometheus-{{ $i }}.{{ .Values.federation.baseFQDN }}"
+    - host: {{ include "thanos-prometheus-operator.hostname" $data }}
       http:
         paths:
         - path: /federate
           backend:
-            serviceName: {{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
-            servicePort: {{ .Values.federation.servicePort }}
+            serviceName: {{ include "thanos-prometheus-operator.serviceName" $data }}
+            servicePort: {{ $root.Values.federation.servicePort }}
 {{- end }}
-{{- end }}
+{{ end }}

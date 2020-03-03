@@ -1,24 +1,26 @@
-{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") .Values.federation.ingresses -}}
-{{ $count := .Values.count | int }}
-{{- range $i, $e := until $count -}}
+{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") -}}
+{{- $root := . -}}
+{{- $count := int .Values.prometheus_operator.prometheus.replicaCount -}}
+{{- range $i := until $count }}
+{{- $data := dict "root" $root "extra" $i }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
+  name: {{ include "thanos-prometheus-operator.serviceName" $data }}
   labels:
-    {{- include "thanos-prometheus-operator.labels" . | nindent 4 }}
+    {{- include "thanos-prometheus-operator.labels" $root | nindent 4 }}
 spec:
   type: ClusterIP
   sessionAffinity: ClientIP
   ports:
     - port: 9090
-      targetPort: {{ .Values.federation.servicePort }}
+      targetPort: {{ $root.Values.federation.ingress.servicePort }}
       protocol: TCP
-      name: {{ .Values.federation.servicePort }}
+      name: {{ $root.Values.federation.ingress.servicePort }}
   selector:
     app: prometheus
-    prometheus: {{ include "thanos-prometheus-operator.fullname" }}
-    statefulset.kubernetes.io/pod-name: prometheus-{{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
-{{- end }}
-{{- end -}}
+    prometheus: {{ include "thanos-prometheus-operator.fullname" $root }}
+    statefulset.kubernetes.io/pod-name: {{ include "thanos-prometheus-operator.pod" $data }}
+{{ end }}
+{{ end }}

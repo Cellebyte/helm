@@ -55,4 +55,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{ printf "{\"apiVersion\":1,\"datasources\":[{\"access\":\"proxy\",\"editable\":false,\"name\":\"prometheus\",\"orgId\":1,\"type\":\"prometheus\",\"url\":\"http://%s-%s.%s.svc:9090\",\"version\":1}]}" (include "thanos-prometheus-operator.fullname" .) "querier" .Release.Namespace | b64enc }}
 {{- end -}}
 
+{{- define "thanos-prometheus-operator.hostname" -}}
+{{ printf "prometheus-%d.%s" .extra .root.Values.federation.ingress.baseFQDN }}
+{{- end -}}
 
+{{- define "thanos-prometheus-operator.serviceName" -}}
+{{ printf "%s-prometheus-%d" (include "thanos-prometheus-operator.fullname" .root) .extra }}
+{{- end -}}
+
+{{- define "thanos-prometheus-operator.pod" -}}
+{{ printf "prometheus-%s-prometheus-%d" (include "thanos-prometheus-operator.fullname" .root) .extra }}
+{{- end -}}

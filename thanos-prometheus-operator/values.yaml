@@ -7,7 +7,7 @@
 
 federation:
   enabled: true
-  type: 'produce'   # this can rather be consume or produce. Consume only enables the externalScrapeConfig
+  type: produce  # this can rather be consume or produce. Consume only enables the externalScrapeConfig
   ingress:          # this only takes effect in the `produce` type
     baseFQDN: k8s.cluster.local
     annotations:
