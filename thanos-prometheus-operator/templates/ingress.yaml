@@ -1,0 +1,35 @@
+{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") ( .Values.federation.ingress) -}}
+{{ $count := .Values.count | int }}
+{{- range $i, $e := until $count -}}
+---
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
+  labels:
+    {{- include "thanos-prometheus-operator.labels" . | nindent 4 }}
+  {{- with .Values.federation.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.federation.ingress.tls }}
+  tls:
+    - hosts:
+        - "prometheus-{{ $i }}.{{ .Values.federation.baseFQDN }}"
+      secretName: {{ $i }}-prometheus-tls-secret
+{{- end }}
+  rules:
+    - host: "prometheus-{{ $i }}.{{ .Values.federation.baseFQDN }}"
+      http:
+        paths:
+        - path: /federate
+          backend:
+            serviceName: {{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
+            servicePort: {{ .Values.federation.servicePort }}
+{{- end }}
+{{- end }}

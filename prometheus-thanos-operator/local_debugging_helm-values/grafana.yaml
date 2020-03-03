@@ -2,7 +2,7 @@
 # kind: HelmRelease
 # metadata:
 #   name: grafana
-#   namespace: monitoring-system
+#   
 # spec:
 #   chart:
 #     repository: https://charts.bitnami.com/bitnami
@@ -275,7 +275,7 @@ metrics:
     enabled: true
     ## Namespace in which Prometheus is running
     ##
-    namespace: monitoring-system
+    
 
     ## Interval at which metrics should be scraped.
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint

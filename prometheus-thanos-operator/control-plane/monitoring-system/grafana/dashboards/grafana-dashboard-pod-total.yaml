@@ -1171,4 +1171,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-pod-total
-  namespace: monitoring-system
+  

@@ -968,4 +968,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-nodes
-  namespace: monitoring-system
+  

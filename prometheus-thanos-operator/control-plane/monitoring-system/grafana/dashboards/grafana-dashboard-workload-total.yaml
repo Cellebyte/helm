@@ -1373,4 +1373,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-workload-total
-  namespace: monitoring-system
+  

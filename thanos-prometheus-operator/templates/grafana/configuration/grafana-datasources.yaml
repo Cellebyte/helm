@@ -1,0 +1,9 @@
+{{- if .Values.grafana.enabled -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-datasources
+data:
+  datasources.yaml: "{{ include "thanos-prometheus-operator.datasources" . }}"
+type: Opaque
+{{- end -}}

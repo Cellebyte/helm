@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: prometheus-operator
     app.kubernetes.io/name: prometheus-operator
   name: prometheus-operator-prometheus-0
-  namespace: monitoring-system
+  
 spec:
   ports:
   - name: http

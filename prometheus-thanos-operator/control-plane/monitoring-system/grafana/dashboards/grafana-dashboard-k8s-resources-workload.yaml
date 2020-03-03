@@ -2030,4 +2030,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-k8s-resources-workload
-  namespace: monitoring-system
+  

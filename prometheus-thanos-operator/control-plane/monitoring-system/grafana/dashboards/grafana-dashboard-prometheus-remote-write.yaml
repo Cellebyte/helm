@@ -1621,4 +1621,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-prometheus-remote-write
-  namespace: monitoring-system
+  

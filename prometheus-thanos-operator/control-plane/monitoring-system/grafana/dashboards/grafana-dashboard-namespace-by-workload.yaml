@@ -1668,4 +1668,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-namespace-by-workload
-  namespace: monitoring-system
+  

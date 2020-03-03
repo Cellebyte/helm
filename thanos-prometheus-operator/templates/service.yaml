@@ -1,0 +1,24 @@
+{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") .Values.federation.ingresses -}}
+{{ $count := .Values.count | int }}
+{{- range $i, $e := until $count -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
+  labels:
+    {{- include "thanos-prometheus-operator.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  sessionAffinity: ClientIP
+  ports:
+    - port: 9090
+      targetPort: {{ .Values.federation.servicePort }}
+      protocol: TCP
+      name: {{ .Values.federation.servicePort }}
+  selector:
+    app: prometheus
+    prometheus: {{ include "thanos-prometheus-operator.fullname" }}
+    statefulset.kubernetes.io/pod-name: prometheus-{{ include "thanos-prometheus-operator.fullname" }}-prometheus-{{ $i }}
+{{- end }}
+{{- end -}}

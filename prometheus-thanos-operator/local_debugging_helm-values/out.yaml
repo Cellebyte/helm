@@ -663,7 +663,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-kube-state-metrics
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/charts/kube-state-metrics/templates/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -683,7 +683,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-kube-state-metrics
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/charts/node-exporter/templates/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -703,7 +703,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-node-exporter
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/templates/alertmanager/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -723,7 +723,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-alertmanager
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/templates/prometheus-operator/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -743,7 +743,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-operator
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/templates/prometheus-operator/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -763,7 +763,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-operator
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/templates/prometheus/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -783,7 +783,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-prometheus
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/templates/prometheus/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -803,7 +803,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: prometheus-operator-prometheus
-    namespace: monitoring-system
+    
 ---
 # Source: prometheus-operator/charts/kube-state-metrics/templates/service.yaml
 apiVersion: v1
@@ -1266,7 +1266,7 @@ spec:
   serviceMonitorSelector: {}
   alerting:
     alertmanagers:
-      - namespace: monitoring-system
+      - 
         name: prometheus-operator-alertmanager
         port: http
         pathPrefix: "/"

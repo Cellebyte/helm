@@ -1311,4 +1311,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-apiserver
-  namespace: monitoring-system
+  

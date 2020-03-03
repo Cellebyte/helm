@@ -2,7 +2,7 @@
 # kind: HelmRelease
 # metadata:
 #   name: prometheus-operator
-#   namespace: monitoring-system
+#   
 # spec:
 #   skipCRDs: false
 #   chart:

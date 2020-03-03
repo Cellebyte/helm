@@ -1114,4 +1114,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-controller-manager
-  namespace: monitoring-system
+  

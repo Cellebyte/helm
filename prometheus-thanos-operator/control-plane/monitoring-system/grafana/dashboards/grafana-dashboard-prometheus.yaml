@@ -1203,4 +1203,4 @@ data:
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-prometheus
-  namespace: monitoring-system
+  

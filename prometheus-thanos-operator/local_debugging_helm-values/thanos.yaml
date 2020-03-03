@@ -2,7 +2,7 @@
 # kind: HelmRelease
 # metadata:
 #   name: thanos
-#   namespace: monitoring-system
+#   
 # spec:
 #   chart:
 #     repository: https://charts.bitnami.com/bitnami
@@ -26,7 +26,7 @@ querier:
     sidecarsService: prometheus-operator-prometheus-thanos
     ## Sidecars namespace to discover them using DNS discovery
     ##
-    sidecarsNamespace: monitoring-system
+    sidecars
 
   ## Querier Service Discovery Configuration
   ## Specify content for servicediscovery.yml
@@ -156,6 +156,6 @@ metrics:
   enabled: true
   serviceMonitor:
     enabled: true
-    namespace: monitoring-system
+    
     interval: 15s
 

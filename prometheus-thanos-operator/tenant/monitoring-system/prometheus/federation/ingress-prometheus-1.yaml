@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-secret: basic-auth
     nginx.ingress.kubernetes.io/auth-type: basic
   name: prometheus-operator-prometheus-1
-  namespace: monitoring-system
+  
 spec:
   rules:
   - host: prometheus-2.k8s.cluster.local

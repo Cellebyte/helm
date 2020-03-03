@@ -1,0 +1,38 @@
+apiVersion: v2
+name: thanos-prometheus-operator
+description: A Helm chart for Kubernetes
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+version: 0.1.0
+
+dependencies:
+  - name: thanos
+    version: 0.1.5
+    repository:  https://charts.bitnami.com/bitnami
+    condition: thanos_query.enabled
+    enabled: true
+    alias: thanos_query
+  - name: grafana
+    version: 1.2.8
+    repository: https://charts.bitnami.com/bitnami
+    condition: grafana.enabled
+  - name: prometheus-operator
+    version: 0.12.6
+    repository: https://charts.bitnami.com/bitnami
+    condition: prometheus_operator.enabled
+    alias: prometheus_operator
+
+maintainers:
+  - name: cellebyte
+    url: https://github.com/Cellebyte

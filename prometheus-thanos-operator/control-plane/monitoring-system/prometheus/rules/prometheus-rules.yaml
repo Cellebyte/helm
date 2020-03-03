@@ -5,7 +5,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: default-alerting-rules
-  namespace: monitoring-system
+  
 spec:
   groups:
   - name: node-exporter.rules

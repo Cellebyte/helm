@@ -1,0 +1,14 @@
+{{- if .Values.prometheus_operator.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: default-alerting-rules
+spec:
+  groups:
+{{- range $path, $_ := .Files.Glob "files/rules/**.yaml" }}
+{{ $.Files.Get $path | indent 2 }}
+{{- end -}}
+{{- end -}}
