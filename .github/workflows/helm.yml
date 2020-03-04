@@ -9,10 +9,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Helm Chart Testing Helm 3
-      uses: HexF/chart-testing-action@v3.0.1
+    - name: Install Helm 3
+      uses: Azure/setup-helm@v1
       with:
-        command: helm lint charts/*
+        version: 3.1.0
+    - name: Lint Helm Charts
+      run: helm lint charts/*
     - name: Helm Publish
       uses: J12934/helm-gh-pages-action@v1.1.0
       with:
