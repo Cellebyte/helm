@@ -23,7 +23,7 @@ jobs:
       run: helm repo index --url https://cellebyte.github.io/helm/ .
     - name: Checkout master
       run: git fetch --all && git checkout master && git status
-    - name: Add all files 
-      run: git add *.tgz index.yaml && git commit -m "Updated Pages"
+    - name: Add all files
+      run: git add *.tgz index.yaml &&   git config --global user.email "actions@github.com" && git config --global user.name "CI GithubActions" && git commit -m "Updated Pages"
     - name: Push
       run: git push origin master
