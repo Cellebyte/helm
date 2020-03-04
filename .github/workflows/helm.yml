@@ -25,10 +25,8 @@ jobs:
   publish: 
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Master
-      uses: actions/checkout@v2
-      with:
-        ref: master
+    - name: Checkout master
+      run: git checkout master && git status
     - name: Add all files 
       run: git add *.tgz index.yaml && git commit -m "Updated Pages"
     - name: Push
