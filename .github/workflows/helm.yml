@@ -21,10 +21,6 @@ jobs:
       run: helm package charts/*
     - name: Create new repoIndex
       run: helm repo index --url https://cellebyte.github.io/helm/ .
-
-  publish: 
-    runs-on: ubuntu-latest
-    steps:
     - name: Checkout master
       run: git checkout master && git status
     - name: Add all files 
