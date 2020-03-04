@@ -1,0 +1,21 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Helm 3
+      uses: Azure/setup-helm@v1
+      with:
+        version: v3.1.0
+    - name: Lint Helm Charts
+      run: helm lint charts/*
+    - name: Helm Publish
+      uses: J12934/helm-gh-pages-action@v1.1.0
+      with:
+        access-token:  ${{ secrets.ACCESS_TOKEN }}
