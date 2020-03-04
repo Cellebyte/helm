@@ -3,12 +3,11 @@
 ## Description
 
 This repository builds up a Setup for the [prometheus-operator](https://github.com/coreos/prometheus-operator) in an HA configuration for local K8s monitoring.
-It ensures that prometheus is running and configured as desired for Deduplication and Caching.
+It ensures that prometheus is running and configured as desired for Deduplication with the Thanos Query.
 
-The base configuration comes from the repository [kube-prometheus](https://github.com/coreos/kube-prometheus).
+The base configurations comes from the repository [kube-prometheus](https://github.com/coreos/kube-prometheus). Adding new dashboards for grafana and rules for prometheus is possible via files in the chart.
 
-## How to build this thing
-
+## How to build the jsonnet stuff
 Install jsonnet or go-jsonnet and the jsonnet bundler.
 
 
@@ -28,59 +27,87 @@ CMD ["bash" "build.sh"]
 
 ```
 
+## Architecture
 
-## Basic configuration
-
-To change some configuration of this project look into the config section.
-
-```jsonnet
-
-
-```
-
+![](Architecture-Graph-Thanos.png)
 
 ## The helm chart stuff
 
-The current diff between the control-plane and the tenant clusters.
+### Dependencies
 
-```txt
-├── .
-└── prometheus-thanos-operator
-    ├── control-plane
-    │   └── monitoring-system
-    │       ├── grafana
-    │       │   ├── configuration
-    │       │   └── dashboards
-    │       ├── local_debugging_helm-values
-    │       └── prometheus
-    │           ├── federation
-    │           └── rules
-    ├── local_debugging_helm-values
-    └── tenant
-        └── monitoring-system
-            ├── grafana
-            │   ├── configuration
-            │   └── dashboards
-            └── prometheus
-                ├── federation
-                └── rules
- 
+```yaml
+dependencies:
+  - name: thanos
+    version: 0.1.5
+    repository:  https://charts.bitnami.com/bitnami
+    condition: query.enabled
+    enabled: true
+    alias: query
+  - name: grafana
+    version: 1.2.8
+    repository: https://charts.bitnami.com/bitnami
+    condition: grafana.enabled
+  - name: prometheus-operator
+    version: 0.13.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: prometheus-operator.enabled
+    alias: prometheus-operator
+```
+
+### Additional Configuration beside the available configuation from the dependencies
+
+```yaml
+federation:
+  enabled: true|false     # enabled ingress federation support for prometheus
+  ingress:          # this only takes effect in the `produce` type
+    baseFQDN: k8s.cluster.local                                       # gets extended with prefix prometheus-(0-N) for every replica in .
+    annotations:
+      nginx.ingress.kubernetes.io/auth-realm: Authentication Required
+      nginx.ingress.kubernetes.io/auth-secret: basic-auth             # this needs to be created by hand.
+      nginx.ingress.kubernetes.io/auth-type: basic
+    servicePort: http
+    tls: no
+
+dashboards:
+  enabled: true                                                       # handles the templating of the dashboard ConfigMaps.
+
+prometheus-operator:
+  enabled: true|false
+  prometheus:
+    enabled: true|false
+    # this should be set if federation is enabled. To decide properly on the different instances.
+    externalLabels:
+      customer: "<customer>"
+      cluster: "<cluster>"
+    # this should be added if federation is disabled. To scrape on the other federated prometheus instances.
+    additionalScrapeConfigsExternal: true
+      
+
+query:
+  enabled: true|false
+
+grafana:
+  enabled: true|false
+
+```
+
+* Example Secret for the `additional-scrape-config.yaml`
+```yaml
+# this file was generated with the following command:
+# $ kubectl create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml --dry-run -oyaml > additional-scrape-configs.yaml
+apiVersion: v1
+data:
+  additional-scrape-configs.yaml: ""
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: prometheus-operator-prometheus-scrape-config
+
+# TODO: AutoGenerate this stuff for every federated instance.
 ```
 
 
-
-```txt
-### only in the control-plane cluster ###
-Only in prometheus-thanos-operator/control-plane/monitoring-system/prometheus/federation: additional-scrape-configs.yaml
-
-### only in the tenant clusters ###
-Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-0.yaml
-Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-1.yaml
-Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-service-0.yaml
-Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: ingress-prometheus-service-1.yaml
-Only in prometheus-thanos-operator/tenant/monitoring-system/prometheus/federation: secret-ingress-prometheus.yaml
-
-
+```diff
 123c123,124
 <         environment: "production"
 ---
