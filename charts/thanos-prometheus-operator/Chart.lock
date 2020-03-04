@@ -8,5 +8,5 @@ dependencies:
 - name: prometheus-operator
   repository: https://charts.bitnami.com/bitnami
   version: 0.13.1
-digest: sha256:87208f2b4f2cb099614c859f9803159e52924710cf5219b31113068eca249eb5
-generated: "2020-03-04T08:42:01.654035921+01:00"
+digest: sha256:e5f93014cc16a6124e1ce490d38548483d31d959eeae2c33a55e8b151227b9d2
+generated: "2020-03-04T14:56:07.696791377+01:00"
