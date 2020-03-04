@@ -28,7 +28,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: grafana.enabled
   - name: prometheus-operator
-    version: 0.12.6
+    version: 0.13.1
     repository: https://charts.bitnami.com/bitnami
     condition: prometheus_operator.enabled
     alias: prometheus_operator

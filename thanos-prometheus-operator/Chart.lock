@@ -7,6 +7,6 @@ dependencies:
   version: 1.2.8
 - name: prometheus-operator
   repository: https://charts.bitnami.com/bitnami
-  version: 0.12.6
-digest: sha256:b5718d261167eeac63c44f11ae9dcafbbeb6b84035cb78c39f535ab23dfc9c09
-generated: "2020-03-03T18:32:34.6751881+01:00"
+  version: 0.13.1
+digest: sha256:87208f2b4f2cb099614c859f9803159e52924710cf5219b31113068eca249eb5
+generated: "2020-03-04T08:42:01.654035921+01:00"
