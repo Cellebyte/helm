@@ -21,7 +21,15 @@ jobs:
       run: helm package charts/*
     - name: Create new repoIndex
       run: helm repo index --url https://cellebyte.github.io/helm/ .
-    - name: Helm Publish
-      uses: mikeal/publish-to-github-action@master
-      env:
-        GITHUB_TOKEN:  ${{ secrets.ACCESS_TOKEN }}
+
+  publish: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+    - name: Add all files 
+      run: git add *.tgz index.yaml && git commit -m "Updated Pages"
+    - name: Push
+      run: git push origin master
