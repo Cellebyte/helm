@@ -1,0 +1,32 @@
+apiVersion: v1
+entries:
+  thanos-prometheus-operator:
+  - apiVersion: v2
+    created: "2020-03-04T14:30:35.393551435Z"
+    dependencies:
+    - alias: query
+      condition: query.enabled
+      enabled: true
+      name: thanos
+      repository: https://charts.bitnami.com/bitnami
+      version: 0.1.5
+    - condition: grafana.enabled
+      name: grafana
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.2.8
+    - alias: prometheus-operator
+      condition: prometheus-operator.enabled
+      name: prometheus-operator
+      repository: https://charts.bitnami.com/bitnami
+      version: 0.13.1
+    description: A Helm chart for Kubernetes
+    digest: d84d51d1e08825345ca2e02a0a0057d815e954f8175601ba8e9b4951bf31bea4
+    maintainers:
+    - name: cellebyte
+      url: https://github.com/Cellebyte
+    name: thanos-prometheus-operator
+    type: application
+    urls:
+    - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-03-04T14:30:35.365616046Z"
