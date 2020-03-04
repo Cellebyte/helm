@@ -1,6 +1,6 @@
-{{- if and .Values.federation.enabled (eq .Values.federation.type "produce") -}}
+{{- if and .Values.federation.enabled -}}
 {{- $root := . -}}
-{{- $count := int .Values.prometheus_operator.prometheus.replicaCount -}}
+{{- $count := int ".Values.prometheus-operator.prometheus.replicaCount" -}}
 {{- range $i := until $count }}
 {{- $data := dict "root" $root "extra" $i }}
 ---

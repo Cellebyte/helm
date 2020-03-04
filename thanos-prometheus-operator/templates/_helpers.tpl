@@ -52,7 +52,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "thanos-prometheus-operator.datasources" -}}
-{{ printf "{\"apiVersion\":1,\"datasources\":[{\"access\":\"proxy\",\"editable\":false,\"name\":\"prometheus\",\"orgId\":1,\"type\":\"prometheus\",\"url\":\"http://%s-%s.%s.svc:9090\",\"version\":1}]}" (include "thanos-prometheus-operator.fullname" .) "querier" .Release.Namespace | b64enc }}
+{{ printf "{\"apiVersion\":1,\"datasources\":[{\"access\":\"proxy\",\"editable\":false,\"name\":\"prometheus\",\"orgId\":1,\"type\":\"prometheus\",\"url\":\"http://%s-%s.%s.svc:9090\",\"version\":1}]}" (include "thanos-prometheus-operator.fullname" .) "query-querier" .Release.Namespace | b64enc }}
 {{- end -}}
 
 {{- define "thanos-prometheus-operator.hostname" -}}

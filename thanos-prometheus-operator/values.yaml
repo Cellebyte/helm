@@ -7,7 +7,6 @@
 
 federation:
   enabled: true
-  type: produce  # this can rather be consume or produce. Consume only enables the externalScrapeConfig
   ingress:          # this only takes effect in the `produce` type
     baseFQDN: k8s.cluster.local
     annotations:
@@ -15,12 +14,12 @@ federation:
       nginx.ingress.kubernetes.io/auth-secret: basic-auth
       nginx.ingress.kubernetes.io/auth-type: basic
     servicePort: http
-    tls: yes
+    tls: no
 
 dashboards:
   enabled: true
 
-prometheus_operator:
+prometheus-operator:
   enabled: true
   rbac:
     create: true
@@ -388,7 +387,7 @@ prometheus_operator:
       https: true
       interval: 15s
 
-thanos_query:
+query:
   enabled: true
   image:
     registry: quay.io

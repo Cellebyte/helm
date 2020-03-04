@@ -1,4 +1,4 @@
-{{- if .Values.prometheus_operator.enabled -}}
+{{- if ".Values.prometheus-operator.enabled" }}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -10,5 +10,5 @@ spec:
   groups:
 {{- range $path, $_ := .Files.Glob "files/rules/**.yaml" }}
 {{ $.Files.Get $path | indent 2 }}
-{{- end -}}
-{{- end -}}
+{{- end }}
+{{ end -}}

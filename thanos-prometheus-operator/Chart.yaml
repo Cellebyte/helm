@@ -20,9 +20,9 @@ dependencies:
   - name: thanos
     version: 0.1.5
     repository:  https://charts.bitnami.com/bitnami
-    condition: thanos_query.enabled
+    condition: query.enabled
     enabled: true
-    alias: thanos_query
+    alias: query
   - name: grafana
     version: 1.2.8
     repository: https://charts.bitnami.com/bitnami
@@ -30,8 +30,8 @@ dependencies:
   - name: prometheus-operator
     version: 0.13.1
     repository: https://charts.bitnami.com/bitnami
-    condition: prometheus_operator.enabled
-    alias: prometheus_operator
+    condition: prometheus-operator.enabled
+    alias: prometheus-operator
 
 maintainers:
   - name: cellebyte
