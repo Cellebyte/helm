@@ -13,6 +13,8 @@ jobs:
         version: v3.1.0
     - name: Lint Helm Charts
       run: helm lint charts/*
+    - name: Add Bitnami repository
+      run: helm repo add bitnami https://charts.bitnami.com/bitnami
     - name: Pull in all dependencies
       run: helm dependency build charts/*
     - name: Package all Helm Charts
