@@ -1,5 +1,5 @@
 # Thanos flavoured Prometheus Operator.
-
+![CI](https://github.com/Cellebyte/helm/workflows/CI/badge.svg?branch=release)
 ## Description
 
 This repository builds up a Setup for the [prometheus-operator](https://github.com/coreos/prometheus-operator) in an HA configuration for local K8s monitoring.
