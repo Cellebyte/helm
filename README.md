@@ -92,6 +92,7 @@ grafana:
 ```
 
 * Example Secret for the `additional-scrape-config.yaml`
+
 ```yaml
 # this file was generated with the following command:
 # $ kubectl create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml --dry-run -oyaml > additional-scrape-configs.yaml
