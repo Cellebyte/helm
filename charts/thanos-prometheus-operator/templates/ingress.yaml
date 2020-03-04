@@ -25,7 +25,8 @@ spec:
     - host: {{ include "thanos-prometheus-operator.hostname" $data }}
       http:
         paths:
-        - backend:
+        - path: /federate
+          backend:
             serviceName: {{ include "thanos-prometheus-operator.serviceName" $data }}
             servicePort: {{ $root.Values.federation.ingress.servicePort }}
 {{- end }}
