@@ -152,10 +152,7 @@ operator:
     ## PrometheusRules to be selected for target discovery.
     ## If {}, select all ServiceMonitors
     ##
-    ruleSelector:
-      matchLabels:
-        prometheus: k8s
-        role: alert-rules
+    ruleSelector: {}
 
     ## ServiceMonitors to be selected for target discovery.
     ## If {}, select all ServiceMonitors
@@ -367,6 +364,7 @@ operator:
     replicaCount: 2
     serviceMonitor:
       enabled: true
+    hostNetwork: false
 
   ## Component scraping the kube-apiserver
   kubeApiServer:

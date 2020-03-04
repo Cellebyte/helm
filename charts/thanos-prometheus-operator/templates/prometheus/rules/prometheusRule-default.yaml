@@ -1,14 +1,16 @@
-{{- if ".Values.prometheus-operator.enabled" }}
+{{- if .Values.operator.enabled }}
+{{ $root := .}}
+{{- range $path, $_ := .Files.Glob "files/rules/**.yaml" }}
+---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    prometheus: k8s
-    role: alert-rules
-  name: default-alerting-rules
+    prometheus: {{ include "thanos-prometheus-operator.name" $root }}-prometheus
+    role: default
+  name: {{ $path | trimSuffix ".yaml" | trimPrefix "files/rules/"}}
 spec:
   groups:
-{{- range $path, $_ := .Files.Glob "files/rules/**.yaml" }}
 {{ $.Files.Get $path | indent 2 }}
 {{- end }}
 {{ end -}}
