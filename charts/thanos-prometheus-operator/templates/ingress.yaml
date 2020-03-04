@@ -1,6 +1,6 @@
 {{- if and .Values.federation.enabled -}}
 {{- $root := . -}}
-{{- $count := int ".Values.prometheus-operator.prometheus.replicaCount" -}}
+{{- $count := int .Values.operator.prometheus.replicaCount -}}
 {{- range $i := until $count }}
 {{- $data := dict "root" $root "extra" $i }}
 ---
@@ -25,8 +25,7 @@ spec:
     - host: {{ include "thanos-prometheus-operator.hostname" $data }}
       http:
         paths:
-        - path: /federate
-          backend:
+        - backend:
             serviceName: {{ include "thanos-prometheus-operator.serviceName" $data }}
             servicePort: {{ $root.Values.federation.ingress.servicePort }}
 {{- end }}

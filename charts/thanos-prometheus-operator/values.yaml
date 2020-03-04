@@ -13,13 +13,13 @@ federation:
       nginx.ingress.kubernetes.io/auth-realm: Authentication Required
       nginx.ingress.kubernetes.io/auth-secret: basic-auth
       nginx.ingress.kubernetes.io/auth-type: basic
-    servicePort: http
+    servicePort: web
     tls: no
 
 dashboards:
   enabled: true
 
-prometheus-operator:
+operator:
   enabled: true
   rbac:
     create: true
@@ -126,7 +126,7 @@ prometheus-operator:
       requests:
         memory: 400Mi
 
-    listenLocal: true
+    listenLocal: false
 
     externalLabels:
       customer: "<customer>"

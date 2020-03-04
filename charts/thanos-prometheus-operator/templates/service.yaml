@@ -1,6 +1,6 @@
 {{- if and .Values.federation.enabled -}}
 {{- $root := . -}}
-{{- $count := int ".Values.prometheus-operator.prometheus.replicaCount" -}}
+{{- $count := int .Values.operator.prometheus.replicaCount -}}
 {{- range $i := until $count }}
 {{- $data := dict "root" $root "extra" $i }}
 ---
@@ -20,7 +20,7 @@ spec:
       name: {{ $root.Values.federation.ingress.servicePort }}
   selector:
     app: prometheus
-    prometheus: {{ include "thanos-prometheus-operator.fullname" $root }}
+    prometheus: {{ include "thanos-prometheus-operator.name" $root }}-prometheus
     statefulset.kubernetes.io/pod-name: {{ include "thanos-prometheus-operator.pod" $data }}
 {{ end }}
 {{ end }}
