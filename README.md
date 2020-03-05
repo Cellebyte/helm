@@ -1,5 +1,6 @@
 # Thanos flavoured Prometheus Operator.
 ![CI](https://github.com/Cellebyte/helm/workflows/CI/badge.svg?branch=release)
+
 ## Description
 
 This repository builds up a Setup for the [prometheus-operator](https://github.com/coreos/prometheus-operator) in an HA configuration for local K8s monitoring.
@@ -32,6 +33,11 @@ CMD ["bash" "build.sh"]
 ![](Architecture-Graph-Thanos.png)
 
 ## The helm chart stuff
+
+### Known Bugs
+
+Currently only the namespace `monitoring-system` is supported if you apply the helm chart into an other namespace.
+Some prometheus rules will fail. The majority of the rules will work.
 
 ### Dependencies
 
@@ -91,6 +97,10 @@ grafana:
 
 ```
 
+### Afterwards configuration
+
+#### basic-auth
+
 * This is needed if you set `federation.enabled: true`
 * Example Secret for the `basic-auth.yaml` federation basic-auth
 * It cannot be handled by the helm chart.
@@ -111,6 +121,29 @@ metadata:
 # TODO: AutoGenerate this stuff for every federated instance.
 ```
 
+#### Additional Scrape Configuration
+
+```yaml
+# additional-scrape-config.yaml
+- job_name: 'prometheus-<customer>'
+  scheme: https
+  scrape_interval: 15s
+  honor_labels: true
+  metrics_path: /federate
+  basic_auth:
+    username: <username>
+    password: <password>
+  params:
+    'match[]':
+      - '{job=~"^(kubelet|thanos-prometheus-operator-.*?|apiserver|kubelet|node-exporter)$"}'
+  tls_config:
+    insecure_skip_verify: true
+  static_configs:
+  - targets:
+    - 'prometheus-0.<baseFQDN>'
+    - 'prometheus-1.<baseFQDN>'
+```
+
 * This is only needed for the control-plane or the core prometheus instance if you don't have services
   outside of K8s
 * Example Secret for the `additional-scrape-config.yaml`
@@ -124,11 +157,12 @@ data:
 kind: Secret
 metadata:
   creationTimestamp: null
-  name: prometheus-operator-prometheus-scrape-config
+  name: thanos-prometheus-operator-prometheus-scrape-config
 
 # TODO: AutoGenerate this stuff for every federated instance.
 ```
 
+##### prometheus diffs between tenant and controlplane
 
 ```diff
 123c123,124
