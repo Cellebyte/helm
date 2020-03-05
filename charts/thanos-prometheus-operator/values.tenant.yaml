@@ -1,0 +1,7 @@
+
+prometheus_operator:
+  prometheus:
+    externalLabels:
+      customer: "example-customer"
+      cluster: "example-cluster"
+    listenLocal: false

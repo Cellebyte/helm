@@ -1,0 +1,10 @@
+# Do not need further federation.
+federation:
+  enabled: false
+
+# Enable additionalScrapeConfigs.
+prometheus-operator:
+  externalLabels:
+    environment: "production"
+  listenLocal: true
+  additionalScrapeConfigsExternal: true
