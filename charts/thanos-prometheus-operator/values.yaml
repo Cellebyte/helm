@@ -7,7 +7,7 @@
 
 federation:
   enabled: true
-  ingress:          # this only takes effect in the `produce` type
+  ingress:
     baseFQDN: k8s.cluster.local
     annotations:
       nginx.ingress.kubernetes.io/auth-realm: Authentication Required

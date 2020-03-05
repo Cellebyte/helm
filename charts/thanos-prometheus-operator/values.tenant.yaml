@@ -1,3 +1,8 @@
+federation:
+  enabled: true
+  ingress:
+    baseFQDN: k8s.cluster.local # prometheus-1.<baseFQDN>, prometheus-2.<baseFQDN>
+
 
 prometheus_operator:
   prometheus:
