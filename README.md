@@ -91,6 +91,28 @@ grafana:
 
 ```
 
+* This is needed if you set `federation.enabled: true`
+* Example Secret for the `basic-auth.yaml` federation basic-auth
+* It cannot be handled by the helm chart.
+
+```yaml
+# the auth file was generated with the following command:
+# htpasswd -cb auth <username> <password>
+# this file was generated with the following command:
+# $ kubectl create secret generic basic-auth --from-file=auth --dry-run -oyaml > basic-auth.yaml
+apiVersion: v1
+data:
+  auth: ""
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: basic-auth
+
+# TODO: AutoGenerate this stuff for every federated instance.
+```
+
+* This is only needed for the control-plane or the core prometheus instance if you don't have services
+  outside of K8s
 * Example Secret for the `additional-scrape-config.yaml`
 
 ```yaml
