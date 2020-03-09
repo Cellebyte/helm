@@ -1,4 +1,5 @@
-# Thanos flavoured Prometheus Operator.
+# Thanos flavoured Prometheus Operator
+
 ![CI](https://github.com/Cellebyte/helm/workflows/CI/badge.svg?branch=release)
 
 ## Description
@@ -9,8 +10,8 @@ It ensures that prometheus is running and configured as desired for Deduplicatio
 The base configurations comes from the repository [kube-prometheus](https://github.com/coreos/kube-prometheus). Adding new dashboards for grafana and rules for prometheus is possible via files in the chart.
 
 ## How to build the jsonnet stuff
-Install jsonnet or go-jsonnet and the jsonnet bundler.
 
+Install jsonnet or go-jsonnet and the jsonnet bundler.
 
 ```Dockerfile
 FROM golang:buster
@@ -30,14 +31,23 @@ CMD ["bash" "build.sh"]
 
 ## Architecture
 
-![](Architecture-Graph-Thanos.png)
+![Thanos Prometheus Operator Architecture Diagram](Architecture-Graph-Thanos.png)
 
 ## The helm chart stuff
 
 ### Known Bugs
 
-Currently only the namespace `monitoring-system` is supported if you apply the helm chart into an other namespace.
-Some prometheus rules will fail. The majority of the rules will work.
+If you are using a different release-name than `thanos-prometheus-operator` or
+if you are using a different namespace than `monitoring-system` you need to set the following
+effectively.
+
+```yaml
+querier:
+  query:
+    dnsDiscovery:
+      sidecarsService: {{ <release_name>-prometheus-thanos | default "thanos-prometheus-operator-prometheus-thanos" }}
+      sidecarsNamespace: {{ <namespace> | default "monitoring-system" }}
+```
 
 ### Dependencies
 
@@ -87,7 +97,6 @@ prometheus-operator:
       cluster: "<cluster>"
     # this should be added if federation is disabled. To scrape on the other federated prometheus instances.
     additionalScrapeConfigsExternal: true
-      
 
 query:
   enabled: true|false
