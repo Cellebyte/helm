@@ -2,8 +2,8 @@ name: CI
 
 on:
   push:
-  branches:
-    - release
+    branches:
+      - release
 
 jobs:
   build:
