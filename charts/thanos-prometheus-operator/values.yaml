@@ -337,6 +337,85 @@ operator:
     kube-state-metrics:
       enabled: true
 
+    kubeControllerManager:
+      enabled: false
+      service:
+        port: 10252
+        targetPort: 10252
+        # selector:
+        #   component: kube-controller-manager
+      serviceMonitor:
+        interval: 15s
+        https: true
+        insecureSkipVerify: null
+        serverName: null
+        metricRelabelings: []
+        relabelings: []
+
+    kubeScheduler:
+      enabled: true
+      service:
+        port: 10251
+        targetPort: 10251
+        # selector:
+        #   component: kube-scheduler
+
+      serviceMonitor:
+        interval: 15s
+        https: false
+        insecureSkipVerify: null
+        serverName: null
+        metricRelabelings: []
+        relabelings: []
+
+    kubeProxy:
+      enabled: false
+      service:
+        port: 10249
+        targetPort: 10249
+        # selector:
+        #   k8s-app: kube-proxy
+
+      serviceMonitor:
+        interval: 15s
+        https: true
+        metricRelabelings: []
+        relabelings: []
+
+    coredns:
+      enabled: true
+      service:
+        port: 9153
+        targetPort: 9153
+        #   selector:
+        #   k8s-app: kube-dns
+      serviceMonitor:
+        interval: 15s
+        metricRelabelings: []
+        relabelings: []
+
+    etcd:
+      enabled: false
+      service:
+        port: 2379
+        targetPort: 2379
+        # selector:
+        #   component: etcd
+
+      serviceMonitor:
+        ## Scrape interval. If not set, the Prometheus default scrape interval is used.
+        ##
+        interval: ""
+        scheme: http
+        insecureSkipVerify: false
+        serverName: ""
+        caFile: ""
+        certFile: ""
+        keyFile: ""
+        metricRelabelings: []
+        relabelings: []
+
+
   ## Node Exporter deployment configuration
   node-exporter:
     image:
