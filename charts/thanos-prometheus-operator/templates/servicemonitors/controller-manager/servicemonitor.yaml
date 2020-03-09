@@ -1,0 +1,67 @@
+{{- if .Values.operator.exporters.kubeControllerManager.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-controller-manager
+  labels:
+    app: {{ template "thanos-prometheus-operator.name" . }}-kube-controller-manager
+    jobLabel: kube-controller-manager
+{{ include "thanos-prometheus-operator.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.operator.exporters.kubeControllerManager.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.operator.exporters.kubeControllerManager.service.targetPort }}
+  selector:
+    {{- if .Values.operator.exporters.kubeControllerManager.service.selector }}
+{{ toYaml .Values.operator.exporters.kubeControllerManager.service.selector | indent 4 }}
+    {{- else}}
+    component: kube-controller-manager
+    {{- end}}
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-controller-manager
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ template "thanos-prometheus-operator.name" . }}-kube-controller-manager
+{{ include "thanos-prometheus-operator.labels" . | indent 4 }}
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      app: {{ template "prometheus-operator.name" . }}-kube-controller-manager
+  namespaceSelector:
+    matchNames:
+      - "kube-system"
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.operator.exporters.kubeControllerManager.serviceMonitor.interval }}
+    interval: {{ .Values.operator.exporters.kubeControllerManager.serviceMonitor.interval }}
+    {{- end }}
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    {{- if .Values.operator.exporters.kubeControllerManager.serviceMonitor.https }}
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      {{- if .Values.operator.exporters.kubeControllerManager.serviceMonitor.insecureSkipVerify }}
+      insecureSkipVerify: {{ .Values.operator.exporters.kubeControllerManager.serviceMonitor.insecureSkipVerify }}
+      {{- end }}
+      {{- if .Values.operator.exporters.kubeControllerManager.serviceMonitor.serverName }}
+      serverName: {{ .Values.operator.exporters.kubeControllerManager.serviceMonitor.serverName }}
+      {{- end }}
+    {{- end }}
+{{- if .Values.operator.exporters.kubeControllerManager.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+{{ tpl (toYaml .Values.operator.exporters.kubeControllerManager.serviceMonitor.metricRelabelings | indent 4) . }}
+{{- end }}
+{{- if .Values.operator.exporters.kubeControllerManager.serviceMonitor.relabelings }}
+    relabelings:
+{{ toYaml .Values.operator.exporters.kubeControllerManager.serviceMonitor.relabelings | indent 4 }}
+{{- end }}
+{{- end }}

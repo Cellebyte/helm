@@ -1,0 +1,74 @@
+
+{{- if .Values.operator.exporters.etcd.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-etcd
+  labels:
+    app: {{ template "thanos-prometheus-operator.name" . }}-kube-etcd
+    jobLabel: kube-etcd
+{{ include "thanos-prometheus-operator.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.operator.exporters.etcd.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.operator.exporters.etcd.service.targetPort }}
+  selector:
+    {{- if .Values.operator.exporters.etcd.service.selector }}
+{{ toYaml .Values.operator.exporters.etcd.service.selector | indent 4 }}
+    {{- else}}
+    component: etcd
+    {{- end}}
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-etcd
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ template "thanos-prometheus-operator.name" . }}-kube-etcd
+{{ include "thanos-prometheus-operator.labels" . | indent 4 }}
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      app: {{ template "thanos-prometheus-operator.name" . }}-kube-etcd
+  namespaceSelector:
+    matchNames:
+      - "kube-system"
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.operator.exporters.etcd.serviceMonitor.interval }}
+    interval: {{ .Values.operator.exporters.etcd.serviceMonitor.interval }}
+    {{- end }}
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    {{- if eq .Values.operator.exporters.etcd.serviceMonitor.scheme "https" }}
+    scheme: https
+    tlsConfig:
+      {{- if .Values.operator.exporters.etcd.serviceMonitor.serverName }}
+      serverName: {{ .Values.operator.exporters.etcd.serviceMonitor.serverName }}
+      {{- end }}
+      {{- if .Values.operator.exporters.etcd.serviceMonitor.caFile }}
+      caFile: {{ .Values.operator.exporters.etcd.serviceMonitor.caFile }}
+      {{- end }}
+      {{- if  .Values.operator.exporters.etcd.serviceMonitor.certFile }}
+      certFile: {{ .Values.operator.exporters.etcd.serviceMonitor.certFile }}
+      {{- end }}
+      {{- if .Values.operator.exporters.etcd.serviceMonitor.keyFile }}
+      keyFile: {{ .Values.operator.exporters.etcd.serviceMonitor.keyFile }}
+      {{- end}}
+      insecureSkipVerify: {{ .Values.operator.exporters.etcd.serviceMonitor.insecureSkipVerify }}
+    {{- end }}
+{{- if .Values.operator.exporters.etcd.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+{{ tpl (toYaml .Values.operator.exporters.etcd.serviceMonitor.metricRelabelings | indent 4) . }}
+{{- end }}
+{{- if .Values.operator.exporters.etcd.serviceMonitor.relabelings }}
+    relabelings:
+{{ toYaml .Values.operator.exporters.etcd.serviceMonitor.relabelings | indent 4 }}
+{{- end }}
+{{- end }}
