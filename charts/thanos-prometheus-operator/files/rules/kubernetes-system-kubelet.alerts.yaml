@@ -1,4 +1,4 @@
-- name: kubernetes-system-kubelet.alerts
+- name: kubernetes-system-kubelet
   rules:
   - alert: KubeNodeNotReady
     annotations:

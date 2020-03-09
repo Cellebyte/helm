@@ -1,4 +1,4 @@
-- name: kubernetes-resources.alerts
+- name: kubernetes-resources
   rules:
   - alert: KubeCPUOvercommit
     annotations:

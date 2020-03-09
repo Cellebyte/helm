@@ -1,4 +1,4 @@
-- name: node-time.alerts
+- name: node-time
   rules:
   - alert: ClockSkewDetected
     annotations:

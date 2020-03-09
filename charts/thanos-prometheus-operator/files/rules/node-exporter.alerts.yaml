@@ -1,4 +1,4 @@
-- name: node-exporter.alerts
+- name: node-exporter
   rules:
   - alert: NodeFilesystemSpaceFillingUp
     annotations:

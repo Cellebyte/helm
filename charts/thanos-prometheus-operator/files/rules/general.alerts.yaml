@@ -1,4 +1,4 @@
-- name: general.alerts
+- name: general
   rules:
   - alert: TargetDown
     annotations:

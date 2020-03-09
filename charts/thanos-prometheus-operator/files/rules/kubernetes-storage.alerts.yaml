@@ -1,4 +1,4 @@
-- name: kubernetes-storage.alerts
+- name: kubernetes-storage
   rules:
   - alert: KubePersistentVolumeUsageCritical
     annotations:

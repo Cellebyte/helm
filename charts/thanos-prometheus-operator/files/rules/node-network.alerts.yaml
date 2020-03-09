@@ -1,4 +1,4 @@
-- name: node-network.alerts
+- name: node-network
   rules:
   - alert: NodeNetworkInterfaceFlapping
     annotations:
