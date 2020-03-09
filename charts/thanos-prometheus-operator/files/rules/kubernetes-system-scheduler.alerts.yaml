@@ -1,4 +1,4 @@
-- name: kubernetes-system-scheduler
+- name: kubernetes-system-scheduler.alerts
   rules:
   - alert: KubeSchedulerDown
     annotations:

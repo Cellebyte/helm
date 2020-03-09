@@ -1,4 +1,4 @@
-- name: kubernetes-system-apiserver
+- name: kubernetes-system-apiserver.alerts
   rules:
   - alert: KubeAPILatencyHigh
     annotations:

@@ -1,4 +1,4 @@
-- name: kubernetes-system
+- name: kubernetes-system.alerts
   rules:
   - alert: KubeVersionMismatch
     annotations:

@@ -1,4 +1,4 @@
-- name: kubernetes-apps
+- name: kubernetes-apps.alerts
   rules:
   - alert: KubePodCrashLooping
     annotations:

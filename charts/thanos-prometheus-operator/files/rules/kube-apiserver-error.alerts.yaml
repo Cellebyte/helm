@@ -1,4 +1,4 @@
-- name: kube-apiserver-error-alerts
+- name: kube-apiserver-error.alerts
   rules:
   - alert: ErrorBudgetBurn
     annotations:
