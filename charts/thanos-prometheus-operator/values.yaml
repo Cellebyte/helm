@@ -742,6 +742,8 @@ grafana:
     fileName: statefulset.json
   - configMapName: grafana-dashboard-workload-total
     fileName: workload-total.json
+  - configMapName: grafana-dashboard-coredns
+    fileName: coredns.json
   ## Create datasources from a custom secret
   ## The secret must contain the files
   ##
