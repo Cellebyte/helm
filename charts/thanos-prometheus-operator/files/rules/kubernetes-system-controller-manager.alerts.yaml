@@ -1,4 +1,4 @@
-- name: kubernetes-system-controller-manager
+- name: kubernetes-system-controller-manager.alerts
   rules:
   - alert: KubeControllerManagerDown
     annotations:
