@@ -30,7 +30,7 @@ spec:
       annotations:
         description: '{{`{{ printf "%.1f" $value }}`}}% errors while sending alerts from Prometheus {{`{{$labels.namespace}}`}}/{{`{{$labels.pod}}`}} to Alertmanager {{`{{$labels.alertmanager}}`}}.'
         summary: Prometheus has encountered more than 1% errors sending alerts to a specific Alertmanager.
-      expr: '(rate(prometheus_notifications_errors_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m])/  rate(prometheus_notifications_sent_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]))* 100> 1'
+      expr: '(rate(prometheus_notifications_errors_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m])/  rate(prometheus_notifications_sent_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]))* 100 > 1'
       for: 15m
       labels:
         severity: warning
@@ -94,7 +94,7 @@ spec:
       annotations:
         description: Prometheus {{`{{$labels.namespace}}`}}/{{`{{$labels.pod}}`}} failed to send {{`{{ printf "%.1f" $value }}`}}% of the samples to {{`{{ if $labels.queue }}{{ $labels.queue }}{{ else }}{{ $labels.url }}{{ end }}`}}.
         summary: Prometheus fails to send samples to remote storage.
-      expr: '(rate(prometheus_remote_storage_failed_samples_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) (rate(prometheus_remote_storage_failed_samples_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) + rate(prometheus_remote_storage_succeeded_samples_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]))* 100> 1'
+      expr: '(rate(prometheus_remote_storage_failed_samples_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m])/ (rate(prometheus_remote_storage_failed_samples_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) + rate(prometheus_remote_storage_succeeded_samples_total{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m])))* 100 > 1'
       for: 15m
       labels:
         severity: critical
@@ -102,15 +102,15 @@ spec:
       annotations:
         description: Prometheus {{`{{$labels.namespace}}`}}/{{`{{$labels.pod}}`}} remote write is {{`{{ printf "%.1f" $value }}`}}s behind for {{`{{ if $labels.queue }}{{ $labels.queue }}{{ else }}{{ $labels.url }}{{ end }}`}}.
         summary: Prometheus remote write is behind.
-      expr: '(max_over_time(prometheus_remote_storage_highest_timestamp_in_seconds{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}}[5m])- on(job, instance) group_right max_over_time(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) 120'
+      expr: '(max_over_time(prometheus_remote_storage_highest_timestamp_in_seconds{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) - on(job, instance) group_right max_over_time(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m])) > 120'
       for: 15m
       labels:
         severity: critical
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
-        description: 'Prometheus {{`{{$labels.namespace}}`}}/{{`{{$labels.pod}}`}} remote write desired shards calculation wants to run {{`{{ $value }}`}} shards, which is more than the max of \{\{ printf `prometheus_remote_storage_shards_max{instance="%s",job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}` {{` $labels.instance `}} | query | first | value \}\}`}}.'
+        description: 'Prometheus {{`{{$labels.namespace}}`}}/{{`{{$labels.pod}}`}} remote write desired shards calculation wants to run {{`{{ $value }}`}} shards, which is more than the max of {{ "{{" }} printf `prometheus_remote_storage_shards_max{instance="%s",job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}` $labels.instance | query | first | value {{ "}}" }}.'
         summary: Prometheus remote write desired shards calculation wants to run morethan configured max shards.
-      expr: '(max_over_time(prometheus_remote_storage_shards_desired{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) max_over_time(prometheus_remote_storage_shards_max{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]))"'
+      expr: '(max_over_time(prometheus_remote_storage_shards_desired{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]) > max_over_time(prometheus_remote_storage_shards_max{job="{{ include "thanos-prometheus-operator.name" . }}-prometheus",namespace="{{ .Release.Namespace }}"}[5m]))'
       for: 15m
       labels:
         severity: warning

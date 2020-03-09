@@ -3,3 +3,4 @@ resources/
 vendor/
 out.yaml
 *.tgz
+out.txt
