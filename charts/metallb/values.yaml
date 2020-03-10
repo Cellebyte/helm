@@ -58,25 +58,8 @@ prometheus:
   prometheusRule:
     enabled: true
 
-# To configure MetalLB, you must specify ONE of the following two
-# options.
-
-# existingConfigMap specifies the name of an externally-defined
-# ConfigMap to use as the configuration. Helm will not manage the
-# contents of this ConfigMap, it is your responsibility to create it.
-# existingConfigMap: metallb-config
-
-# configInline specifies MetalLB's configuration directly, in yaml
-# format. When configInline is used, Helm manages MetalLB's
-# configuration ConfigMap as part of the release, and
-# existingConfigMap is ignored.
-#
-# ref: https://metallb.universe.tf/configuration/ for
-# available options.
-configInline: {}
-
-## controller contains configuration specific to the MetalLB cluster
-## controller.
+## Metallb Controller deployment.
+## ref: https://hub.docker.com/r/metallb/controller/tags
 controller:
   image:
     registry: docker.io
@@ -118,9 +101,8 @@ controller:
     # true, a name is generated using the fullname template
     name: ""
 
-## speaker contains configuration specific to the MetalLB speaker
-## daemonset.
-## ref: 
+## Metallb Speaker daemonset.
+## ref: https://hub.docker.com/r/metallb/speaker/tags
 speaker:
   image:
     registry: docker.io
