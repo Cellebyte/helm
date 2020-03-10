@@ -30,7 +30,7 @@ operator:
     image:
       registry: quay.io
       repository: coreos/prometheus-operator
-      tag: v0.36.0
+      tag: v0.37.0
       pullPolicy: IfNotPresent
     serviceAccount:
       create: true
@@ -93,7 +93,7 @@ operator:
       image:
         registry: quay.io
         repository: coreos/prometheus-config-reloader
-        tag: v0.36.0
+        tag: v0.37.0
   prometheus:
     enabled: true
 
