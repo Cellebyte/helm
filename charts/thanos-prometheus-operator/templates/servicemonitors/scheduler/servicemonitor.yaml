@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-scheduler
+  name: {{ include "thanos-prometheus-operator.fullname" . }}-kube-scheduler
   labels:
-    app: {{ template "thanos-prometheus-operator.name" . }}-kube-scheduler
+    app: {{ include "thanos-prometheus-operator.name" . }}-kube-scheduler
     jobLabel: kube-scheduler
 {{ include "thanos-prometheus-operator.labels" . | indent 4 }}
   namespace: kube-system
@@ -26,16 +26,16 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-scheduler
+  name: {{ include "thanos-prometheus-operator.fullname" . }}-kube-scheduler
   namespace: {{ $.Release.Namespace }}
   labels:
-    app: {{ template "thanos-prometheus-operator.name" . }}-kube-scheduler
+    app: {{ include "thanos-prometheus-operator.name" . }}-kube-scheduler
 {{ include "thanos-prometheus-operator.labels" . | indent 4 }}
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
-      app: {{ template "thanos-prometheus-operator.name" . }}-kube-scheduler
+      app: {{ include "thanos-prometheus-operator.name" . }}-kube-scheduler
   namespaceSelector:
     matchNames:
       - "kube-system"
