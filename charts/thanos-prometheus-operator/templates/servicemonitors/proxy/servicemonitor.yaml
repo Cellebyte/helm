@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-proxy
+  name: {{ include "thanos-prometheus-operator.fullname" . }}-kube-proxy
   labels:
-    app: {{ template "thanos-prometheus-operator.name" . }}-kube-proxy
+    app: {{ include "thanos-prometheus-operator.name" . }}-kube-proxy
     jobLabel: kube-proxy
 {{ include "thanos-prometheus-operator.labels" . | indent 4 }}
   namespace: kube-system
@@ -26,16 +26,16 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "thanos-prometheus-operator.fullname" . }}-kube-proxy
+  name: {{ include "thanos-prometheus-operator.fullname" . }}-kube-proxy
   namespace: {{ $.Release.Namespace }}
   labels:
-    app: {{ template "thanos-prometheus-operator.name" . }}-kube-proxy
+    app: {{ include "thanos-prometheus-operator.name" . }}-kube-proxy
 {{ include "thanos-prometheus-operator.labels" . | indent 4 }}
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
-      app: {{ template "thanos-prometheus-operator.name" . }}-kube-proxy
+      app: {{ include "thanos-prometheus-operator.name" . }}-kube-proxy
   namespaceSelector:
     matchNames:
       - "kube-system"
