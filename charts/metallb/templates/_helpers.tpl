@@ -2,8 +2,72 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "DTMetalLB.name" -}}
+{{- define "metallb.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Return the proper metallb controller image name
+*/}}
+{{- define "metallb.controller.image" -}}
+{{- $registryName := .Values.controller.image.registry -}}
+{{- $repositoryName := .Values.controller.image.repository -}}
+{{- $tag := .Values.controller.image.tag | toString -}}
+{{/*
+Helm 2.11 supports the assignment of a value to a variable defined in a different scope,
+but Helm 2.9 and 2.10 doesn't support it, so we need to implement this if-else logic.
+Also, we can't use a single if because lazy evaluation is not an option
+*/}}
+{{- if .Values.global }}
+    {{- if .Values.global.imageRegistry }}
+        {{- printf "%s/%s:%s" .Values.global.imageRegistry $repositoryName $tag -}}
+    {{- else -}}
+        {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+    {{- end -}}
+{{- else -}}
+    {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the proper metallb speaker image name
+*/}}
+{{- define "metallb.speaker.image" -}}
+{{- $registryName := .Values.speaker.image.registry -}}
+{{- $repositoryName := .Values.speaker.image.repository -}}
+{{- $tag := .Values.speaker.image.tag | toString -}}
+{{/*
+Helm 2.11 supports the assignment of a value to a variable defined in a different scope,
+but Helm 2.9 and 2.10 doesn't support it, so we need to implement this if-else logic.
+Also, we can't use a single if because lazy evaluation is not an option
+*/}}
+{{- if .Values.global }}
+    {{- if .Values.global.imageRegistry }}
+        {{- printf "%s/%s:%s" .Values.global.imageRegistry $repositoryName $tag -}}
+    {{- else -}}
+        {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+    {{- end -}}
+{{- else -}}
+    {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "metallb.labels" -}}
+app.kubernetes.io/name: {{ include "metallb.name" . }}
+helm.sh/chart: {{ include "metallb.chart" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Labels to use on deploy.spec.selector.matchLabels and svc.spec.selector
+*/}}
+{{- define "metallb.matchLabels" -}}
+app.kubernetes.io/name: {{ include "metallb.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
@@ -11,7 +75,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "DTMetalLB.fullname" -}}
+{{- define "metallb.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,37 +91,98 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "DTMetalLB.chart" -}}
+{{- define "metallb.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
-Common labels
+Return the proper Docker Image Registry Secret Names
 */}}
-{{- define "DTMetalLB.labels" -}}
-helm.sh/chart: {{ include "DTMetalLB.chart" . }}
-{{ include "DTMetalLB.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- define "metallb.controller.imagePullSecrets" -}}
+{{/*
+Helm 2.11 supports the assignment of a value to a variable defined in a different scope,
+but Helm 2.9 and 2.10 does not support it, so we need to implement this if-else logic.
+Also, we can not use a single if because lazy evaluation is not an option
+*/}}
+{{- if .Values.global }}
+{{- if .Values.global.imagePullSecrets }}
+imagePullSecrets:
+{{- range .Values.global.imagePullSecrets }}
+  - name: {{ . }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- else if .Values.controller.image.pullSecrets }}
+imagePullSecrets:
+{{- range .Values.controller.image.pullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- end -}}
+{{- else if .Values.controller.image.pullSecrets }}
+imagePullSecrets:
+{{- range .Values.controller.image.pullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
+Return the proper Docker Image Registry Secret Names
+*/}}
+{{- define "metallb.speaker.imagePullSecrets" -}}
+{{/*
+Helm 2.11 supports the assignment of a value to a variable defined in a different scope,
+but Helm 2.9 and 2.10 does not support it, so we need to implement this if-else logic.
+Also, we can not use a single if because lazy evaluation is not an option
+*/}}
+{{- if .Values.global }}
+{{- if .Values.global.imagePullSecrets }}
+imagePullSecrets:
+{{- range .Values.global.imagePullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- else if .Values.speaker.image.pullSecrets }}
+imagePullSecrets:
+{{- range .Values.speaker.image.pullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- end -}}
+{{- else if .Values.speaker.image.pullSecrets }}
+imagePullSecrets:
+{{- range .Values.speaker.image.pullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- end -}}
 {{- end -}}
 
 {{/*
-Selector labels
+Create the name of the controller service account to use
 */}}
-{{- define "DTMetalLB.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "DTMetalLB.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end -}}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "DTMetalLB.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-    {{ default (include "DTMetalLB.fullname" .) .Values.serviceAccount.name }}
+{{- define "metallb.controllerServiceAccountName" -}}
+{{- if .Values.controller.serviceAccount.create -}}
+    {{ default (printf "%s-controller" (include "metallb.fullname" .)) .Values.controller.serviceAccount.name }}
 {{- else -}}
-    {{ default "default" .Values.serviceAccount.name }}
+    {{ default "default" .Values.controller.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create the name of the speaker service account to use
+*/}}
+{{- define "metallb.speakerServiceAccountName" -}}
+{{- if .Values.speaker.serviceAccount.create -}}
+    {{ default (printf "%s-speaker" (include "metallb.fullname" .)) .Values.speaker.serviceAccount.create }}
+{{- else -}}
+    {{ default "default" .Values.speaker.serviceAccount.create }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create the name of the settings ConfigMap to use.
+*/}}
+{{- define "metallb.configMapName" -}}
+{{- if .Values.configInline -}}
+    {{ include "metallb.fullname" . }}
+{{- else -}}
+    {{ .Values.existingConfigMap }}
 {{- end -}}
 {{- end -}}
