@@ -56,6 +56,7 @@ Also, we can't use a single if because lazy evaluation is not an option
 Common labels
 */}}
 {{- define "metallb.labels" -}}
+app: {{ include "metallb.name" . }}
 app.kubernetes.io/name: {{ include "metallb.name" . }}
 helm.sh/chart: {{ include "metallb.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
@@ -170,9 +171,9 @@ Create the name of the speaker service account to use
 */}}
 {{- define "metallb.speakerServiceAccountName" -}}
 {{- if .Values.speaker.serviceAccount.create -}}
-    {{ default (printf "%s-speaker" (include "metallb.fullname" .)) .Values.speaker.serviceAccount.create }}
+    {{ default (printf "%s-speaker" (include "metallb.fullname" .)) .Values.speaker.serviceAccount.name }}
 {{- else -}}
-    {{ default "default" .Values.speaker.serviceAccount.create }}
+    {{ default "default" .Values.speaker.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
 

@@ -1,39 +1,40 @@
-# Default values for metallb.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+## Default values for metallb.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
 
 ## Global Docker image parameters
 ## Please, note that this will override the image parameters, including dependencies, configured to use the global value
-## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets
 ##
 # global:
 #   imageRegistry: myRegistryName
 #   imagePullSecrets:
 #     - myRegistryKeySecretName
 
-# To configure MetalLB, you must specify ONE of the following two
-# options.
-
-# existingConfigMap specifies the name of an externally-defined
-# ConfigMap to use as the configuration. Helm will not manage the
-# contents of this ConfigMap, it is your responsibility to create it.
-# existingConfigMap: metallb-config
-
-# configInline specifies MetalLB's configuration directly, in yaml
-# format. When configInline is used, Helm manages MetalLB's
-# configuration ConfigMap as part of the release, and
-# existingConfigMap is ignored.
+## To configure MetalLB, you must specify ONE of the following two
+## options.
 #
-# Refer to https://metallb.universe.tf/configuration/ for
-# available options.
+## existingConfigMap specifies the name of an externally-defined
+## ConfigMap to use as the configuration. Helm will not manage the
+## contents of this ConfigMap, it is your responsibility to create it.
+#
+existingConfigMap: metallb-config
+#
+## configInline specifies MetalLB's configuration directly, in yaml
+## format. When configInline is used, Helm manages MetalLB's
+## configuration ConfigMap as part of the release, and
+## existingConfigMap is ignored.
+## Refer to https://metallb.universe.tf/configuration/ for
+## available options.
+#
 configInline: {}
 
 
-## String to partially override grafana.fullname include (will maintain the release name)
+## String to partially override metallb.fullname include (will maintain the release name)
 ##
 # nameOverride:
 
-## String to fully override grafana.fullname template
+## String to fully override metallb.fullname template
 ##
 # fullnameOverride:
 
@@ -70,17 +71,21 @@ prometheus:
 # configuration ConfigMap as part of the release, and
 # existingConfigMap is ignored.
 #
-# Refer to https://metallb.universe.tf/configuration/ for
+# ref: https://metallb.universe.tf/configuration/ for
 # available options.
 configInline: {}
 
-# controller contains configuration specific to the MetalLB cluster
-# controller.
+## controller contains configuration specific to the MetalLB cluster
+## controller.
 controller:
   image:
     registry: docker.io
     repository: metallb/controller
-    tag: v0.8.1
+    tag: v0.8.3
+    ## Specify a imagePullPolicy
+    ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+    ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+    ##
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -88,10 +93,21 @@ controller:
     ##
     # pullSecrets:
     #   - myRegistryKeySecretName
-  resources: {}
-    # limits:
+
+  ## Controller container resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits: {}
       # cpu: 100m
       # memory: 100Mi
+    requests: {}
+      # memory: 25Mi
+      # cpu: 25m
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -102,18 +118,40 @@ controller:
     # true, a name is generated using the fullname template
     name: ""
 
-# speaker contains configuration specific to the MetalLB speaker
-# daemonset.
+## speaker contains configuration specific to the MetalLB speaker
+## daemonset.
+## ref: 
 speaker:
   image:
     registry: docker.io
     repository: metallb/speaker
-    tag: v0.8.1
+    tag: v0.8.3
+    ## Specify a imagePullPolicy
+    ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+    ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+    ##
     pullPolicy: IfNotPresent
+    ## Optionally specify an array of imagePullSecrets.
+    ## Secrets must be manually created in the namespace.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    ##
+    # pullSecrets:
+    #   - myRegistryKeySecretName
+
+  ## Speaker container resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
   resources:
-    limits:
-      cpu: 100m
-      memory: 100Mi
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits: {}
+      # cpu: 100m
+      # memory: 100Mi
+    requests: {}
+      # memory: 25Mi
+      # cpu: 25m
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -123,3 +161,14 @@ speaker:
     # The name of the ServiceAccount to use.  If not set and create is
     # true, a name is generated using the fullname template
     name: ""
+
+
+## Configure extra options for liveness probe
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes)
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 180
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
