@@ -234,7 +234,7 @@ operator:
       image:
         registry: quay.io
         repository: thanos/thanos
-        tag: v0.10.1
+        tag: v0.11.0
         pullPolicy: IfNotPresent
       service:
         type: ClusterIP
@@ -390,7 +390,7 @@ query:
   image:
     registry: quay.io
     repository: thanos/thanos
-    tag: v0.10.1
+    tag: v0.11.0
     pullPolicy: IfNotPresent
   clusterDomain: cluster.local
   querier:
