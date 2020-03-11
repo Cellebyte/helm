@@ -1,0 +1,40 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "contour.fullname" . }}-contour-certgen
+  labels: {{- include "contour.labels" . | nindent 4 }}
+    component: contour-certgen
+spec:
+  ttlSecondsAfterFinished: 0
+  template:
+    metadata:
+      labels: {{- include "contour.labels" . | nindent 8 }}
+        component: contour-certgen
+    spec:
+{{- include "contour.imagePullSecrets" . | nindent 6 }}
+      containers:
+      - name: contour
+        image: {{ include "contour.image" . }}
+        imagePullPolicy: {{ .Values.contour.image.pullPolicy }}
+        command:
+        - contour
+        - certgen
+        - --incluster
+        - --kube
+        env:
+        - name: CONTOUR_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      restartPolicy: Never
+      serviceAccountName: {{ include "contour.contourCertGenServiceAccountName" . }}
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+      {{- end }}
+  parallelism: 1
+  completions: 1
+  backoffLimit: 1

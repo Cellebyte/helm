@@ -2,23 +2,25 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: contour
-  namespace: projectcontour
+  name: {{ include "contour.fullname" . }}
+  labels: {{- include "contour.labels" . | nindent 4 }}
+    component: contour
 spec:
   ports:
     - port: 8001
       name: xds
       protocol: TCP
       targetPort: 8001
-  selector:
-    app: contour
+  selector: {{- include "contour.matchLabels" . | nindent 4 }}
+    component: contour
   type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: envoy
-  namespace: projectcontour
+  name: {{ include "contour.fullname" . }}-envoy
+  labels: {{- include "contour.labels" . | nindent 4 }}
+    component: envoy
   annotations:
     # This annotation puts the AWS ELB into "TCP" mode so that it does not
     # do HTTP negotiation for HTTPS connections at the ELB edge.
@@ -36,6 +38,6 @@ spec:
     - port: 443
       name: https
       protocol: TCP
-  selector:
-    app: envoy
+  selector: {{- include "contour.matchLabels" . | nindent 4 }}
+    component: envoy
   type: LoadBalancer
