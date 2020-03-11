@@ -14,8 +14,17 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 1.2.1
-
+version: 1.2.2
+keywords:
+- prometheus
+- alertmanager
+- operator
+- monitoring
+home: https://github.com/coreos/prometheus-operator/
+icon: https://bitnami.com/assets/stacks/prometheus-operator/img/prometheus-operator-stack-220x234.png
+sources:
+- https://github.com/coreos/prometheus-operator/
+- https://github.com/thanos-io/thanos
 dependencies:
   - name: thanos
     version: 0.1.7
