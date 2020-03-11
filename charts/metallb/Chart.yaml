@@ -1,7 +1,7 @@
 apiVersion: v2
 name: metallb
 description: The Metal LB for Kubernetes
-
+appVersion: 0.8.3
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -11,7 +11,19 @@ description: The Metal LB for Kubernetes
 # a dependency of application charts to inject those utilities and functions into the rendering
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-
+keywords:
+  - "load-balancer"
+  - "balancer"
+  - "lb"
+  - "bgp"
+  - "arp"
+  - "vrrp"
+  - "vip"
+home: https://metallb.universe.tf
+icon: https://metallb.universe.tf/images/logo.png
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.0
+version: 0.1.1
+maintainers:
+  - name: cellebyte
+    url: https://github.com/Cellebyte
