@@ -23,7 +23,7 @@ home: https://metallb.universe.tf
 icon: https://metallb.universe.tf/images/logo.png
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.1
+version: 0.1.2
 maintainers:
   - name: cellebyte
     url: https://github.com/Cellebyte

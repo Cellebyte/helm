@@ -11,7 +11,7 @@ spec:
   selector: {{- include "metallb.matchLabels" . | nindent 4 }}
     component: controller
   ports:
-  - name: metrics
+  - name: http-metrics
     port: 7472
     protocol: TCP
     targetPort: 7472

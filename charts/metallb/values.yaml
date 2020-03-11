@@ -29,7 +29,6 @@ existingConfigMap: metallb-config
 #
 configInline: {}
 
-
 ## String to partially override metallb.fullname include (will maintain the release name)
 ##
 # nameOverride:
