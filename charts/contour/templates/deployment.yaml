@@ -27,8 +27,8 @@ spec:
           preferredDuringSchedulingIgnoredDuringExecution:
           - podAffinityTerm:
               labelSelector:
-                matchLabels:
-                  app: contour
+                matchLabels: {{- include "contour.matchLabels" . | nindent 18 }}
+                  component: contour
               topologyKey: kubernetes.io/hostname
             weight: 100
       containers:
