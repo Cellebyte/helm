@@ -1,5 +1,3 @@
-
-
 ## To configure Contour, you must specify ONE of the following two
 ## options.
 #
@@ -70,11 +68,11 @@ configInline:
   #   - "user_agent"
   #   - "x_forwarded_for"
 
-## String to partially override metallb.fullname include (will maintain the release name)
+## String to partially override contour.fullname include (will maintain the release name)
 ##
 # nameOverride:
 
-## String to fully override metallb.fullname template
+## String to fully override contour.fullname template
 ##
 # fullnameOverride:
 
