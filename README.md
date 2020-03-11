@@ -1,5 +1,7 @@
 # Cellebyte's Helm Chart Repository Documentation
 
+![CI](https://github.com/Cellebyte/helm/workflows/CI/badge.svg?branch=release)
+
 ## Contribution
 
 If you want to contribute to this Helm Chart repository. Look at [GitHub.com/Cellebyte/helm](https://github.com/cellebyte/helm).
