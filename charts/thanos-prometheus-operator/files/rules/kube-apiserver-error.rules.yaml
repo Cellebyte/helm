@@ -1,4 +1,4 @@
-- name: kube-apiserver-error
+- name: kube-apiserver-error.rules
   rules:
   - expr: "sum by (status_class) (\n  label_replace(\n    rate(apiserver_request_total{job=\"\
       apiserver\"}[5m]\n  ), \"status_class\", \"${1}xx\", \"code\", \"([0-9])..\"\

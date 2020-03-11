@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - release
 
 jobs:
   build:
@@ -16,9 +19,9 @@ jobs:
     - name: Add Bitnami repository
       run: helm repo add bitnami https://charts.bitnami.com/bitnami
     - name: Pull in all dependencies
-      run: helm dependency build charts/*
+      run: find 'charts/' -maxdepth 1 -mindepth 1 -exec helm dependency build {} \;
     - name: Package all Helm Charts
-      run: helm package charts/*
+      run: find 'charts/' -maxdepth 1 -mindepth 1 -exec helm package {} \;
     - name: Checkout master
       run: git fetch --all && git checkout master && git status
     - name: Create new repoIndex

@@ -1,0 +1,61 @@
+{{- if .Values.operator.exporters.kubeProxy.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "thanos-prometheus-operator.fullname" . }}-kube-proxy
+  labels:
+    app: {{ include "thanos-prometheus-operator.name" . }}-kube-proxy
+    jobLabel: kube-proxy
+{{ include "thanos-prometheus-operator.labels" . | indent 4 }}
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: {{ .Values.operator.exporters.kubeProxy.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.operator.exporters.kubeProxy.service.targetPort }}
+  selector:
+    {{- if .Values.operator.exporters.kubeProxy.service.selector }}
+{{ toYaml .Values.operator.exporters.kubeProxy.service.selector | indent 4 }}
+    {{- else}}
+    k8s-app: kube-proxy
+    {{- end}}
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "thanos-prometheus-operator.fullname" . }}-kube-proxy
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ include "thanos-prometheus-operator.name" . }}-kube-proxy
+{{ include "thanos-prometheus-operator.labels" . | indent 4 }}
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      app: {{ include "thanos-prometheus-operator.name" . }}-kube-proxy
+  namespaceSelector:
+    matchNames:
+      - "kube-system"
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.operator.exporters.kubeProxy.serviceMonitor.interval }}
+    interval: {{ .Values.operator.exporters.kubeProxy.serviceMonitor.interval }}
+    {{- end }}
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    {{- if .Values.operator.exporters.kubeProxy.serviceMonitor.https }}
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    {{- end}}
+{{- if .Values.operator.exporters.kubeProxy.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+{{ toYaml .Values.operator.exporters.kubeProxy.serviceMonitor.metricRelabelings | indent 4 }}
+{{- end }}
+{{- if .Values.operator.exporters.kubeProxy.serviceMonitor.relabelings }}
+    relabelings:
+{{ toYaml .Values.operator.exporters.kubeProxy.serviceMonitor.relabelings | indent 4 }}
+{{- end }}
+{{- end }}
