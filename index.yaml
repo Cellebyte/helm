@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   metallb:
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.52925777Z"
+    created: "2020-03-11T11:49:37.137639624Z"
     description: The Metal LB for Kubernetes
     digest: 7d8c3ba4506e297bee42639181991954c305c4e1a21e67e7e342e5466d7a0690
     name: metallb
@@ -12,7 +12,7 @@ entries:
     version: 0.1.0
   thanos-prometheus-operator:
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.708974395Z"
+    created: "2020-03-11T11:49:37.374120134Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -40,7 +40,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.67850943Z"
+    created: "2020-03-11T11:49:37.346121456Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -68,7 +68,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.654197197Z"
+    created: "2020-03-11T11:49:37.319360478Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -96,7 +96,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.1.4.tgz
     version: 1.1.4
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.633115629Z"
+    created: "2020-03-11T11:49:37.294803497Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -124,7 +124,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.1.3.tgz
     version: 1.1.3
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.613161648Z"
+    created: "2020-03-11T11:49:37.268434519Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -152,7 +152,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.3.tgz
     version: 0.1.3
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.592487175Z"
+    created: "2020-03-11T11:49:37.242521439Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -180,7 +180,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.572714292Z"
+    created: "2020-03-11T11:49:37.210084166Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -208,7 +208,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.1.tgz
     version: 0.1.1
   - apiVersion: v2
-    created: "2020-03-10T14:29:33.55015084Z"
+    created: "2020-03-11T11:49:37.176298693Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -235,4 +235,4 @@ entries:
     urls:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2020-03-10T14:29:33.528442879Z"
+generated: "2020-03-11T11:49:37.134791426Z"
