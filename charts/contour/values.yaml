@@ -157,10 +157,10 @@ contour:
     successThreshold: 1
 
   securityContext:
-  enabled: true
-  runAsNonRoot: true
-  runAsUser: 65534
-  runAsGroup: 65534
+    enabled: true
+    runAsNonRoot: true
+    runAsUser: 65534
+    runAsGroup: 65534
 
   certgen:
     serviceAccount:
