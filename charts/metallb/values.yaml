@@ -49,7 +49,7 @@ prometheus:
     # Job label for scrape target
     jobLabel: metallb
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
-    interval: 15s
+    interval: ""
     metricRelabelings: []
     relabelings: []
 
