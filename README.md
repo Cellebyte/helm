@@ -15,5 +15,6 @@ $ helm repo add cellebyte https://cellebyte.github.io/helm
 
 ## Current Helm Charts
 
+* [contour](charts/contour/README.md)
 * [metallb](charts/metallb/README.md)
 * [thanos-prometheus-operator](charts/thanos-prometheus-operator/README.md)
