@@ -31,6 +31,17 @@ spec:
                   component: contour
               topologyKey: kubernetes.io/hostname
             weight: 100
+        {{- with .Values.contour.affinity }}
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.contour.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.contour.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
       containers:
       - args:
         - serve
@@ -76,6 +87,8 @@ spec:
           successThreshold: {{ .Values.contour.readinessProbe.successThreshold }}
           failureThreshold: {{ .Values.contour.readinessProbe.failureThreshold }}
       {{- end }}
+        resources:
+{{ toYaml .Values.contour.resources | indent 10 }}
         volumeMounts:
         - name: contourcert
           mountPath: /certs
@@ -94,11 +107,11 @@ spec:
               fieldPath: metadata.name
       dnsPolicy: ClusterFirst
       serviceAccountName: {{ include "contour.contourServiceAccountName" . }}
-      {{- if .Values.securityContext.enabled }}
+      {{- if .Values.contour.securityContext.enabled }}
       securityContext:
-        runAsUser: {{ .Values.securityContext.runAsUser }}
-        fsGroup: {{ .Values.securityContext.fsGroup }}
-        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+        runAsUser: {{ .Values.contour.securityContext.runAsUser }}
+        fsGroup: {{ .Values.contour.securityContext.fsGroup }}
+        runAsNonRoot: {{ .Values.contour.securityContext.runAsNonRoot }}
       {{- end }}
       volumes:
       - name: contourcert

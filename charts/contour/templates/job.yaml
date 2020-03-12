@@ -13,6 +13,18 @@ spec:
         component: contour-certgen
     spec:
 {{- include "contour.imagePullSecrets" . | nindent 6 }}
+    {{- with .Values.contour.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.contour.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.contour.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
       containers:
       - name: contour
         image: {{ include "contour.image" . }}
@@ -29,11 +41,13 @@ spec:
               fieldPath: metadata.namespace
       restartPolicy: Never
       serviceAccountName: {{ include "contour.contourCertGenServiceAccountName" . }}
-      {{- if .Values.securityContext.enabled }}
+        resources:
+{{ toYaml .Values.contour.resources | indent 10 }}
+      {{- if .Values.contour.securityContext.enabled }}
       securityContext:
-        runAsUser: {{ .Values.securityContext.runAsUser }}
-        fsGroup: {{ .Values.securityContext.fsGroup }}
-        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+        runAsUser: {{ .Values.contour.securityContext.runAsUser }}
+        fsGroup: {{ .Values.contour.securityContext.fsGroup }}
+        runAsNonRoot: {{ .Values.contour.securityContext.runAsNonRoot }}
       {{- end }}
   parallelism: 1
   completions: 1

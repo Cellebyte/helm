@@ -21,6 +21,8 @@ keywords:
   - "vip"
 home: https://metallb.universe.tf
 icon: https://metallb.universe.tf/images/logo.png
+sources:
+- https://github.com/metallb/metallb
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 version: 0.1.3

@@ -1,3 +1,16 @@
+## Default values for contour.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
+
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets
+##
+# global:
+#   imageRegistry: myRegistryName
+#   imagePullSecrets:
+#     - myRegistryKeySecretName
+
 ## To configure Contour, you must specify ONE of the following two
 ## options.
 #
@@ -103,18 +116,20 @@ contour:
 
   ## Contour container resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ## ref: https://projectcontour.io/guides/resource-limits/
   ##
   resources:
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    ## We usually recommend not to specify default resources and to leave this as a conscious
+    ## choice for the user. This also increases chances charts run on environments with little
+    ## resources, such as Minikube. If you do want to specify resources, uncomment the following
+    ## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits: {}
-      # cpu: 100m
-      # memory: 100Mi
+      # cpu: 400m
+      # memory: 250Mi
     requests: {}
+      # cpu: 100m
       # memory: 25Mi
-      # cpu: 25m
+
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -141,6 +156,20 @@ contour:
     failureThreshold: 3
     successThreshold: 1
 
+  securityContext:
+  enabled: true
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+
+  certgen:
+    serviceAccount:
+      # Specifies whether a ServiceAccount should be created
+      create: true
+      # The name of the ServiceAccount to use.  If not set and create is
+      # true, a name is generated using the fullname template
+      name: ""
+
 envoy:
   image:
     registry: docker.io
@@ -160,18 +189,20 @@ envoy:
 
   ## Envoy container resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ## ref: https://projectcontour.io/guides/resource-limits/
   ##
   resources:
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    ## We usually recommend not to specify default resources and to leave this as a conscious
+    ## choice for the user. This also increases chances charts run on environments with little
+    ## resources, such as Minikube. If you do want to specify resources, uncomment the following
+    ## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    
     limits: {}
-      # cpu: 100m
-      # memory: 100Mi
+      # cpu: 400m
+      # memory: 250Mi
     requests: {}
+      # cpu: 100m
       # memory: 25Mi
-      # cpu: 25m
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -183,7 +214,7 @@ envoy:
     name: ""
   readinessProbe:
     enabled: true
-    initialDelaySeconds: 3
+    initialDelaySeconds: 10
     periodSeconds: 3
     timeoutSeconds: 1
     failureThreshold: 3
@@ -200,17 +231,3 @@ prometheus:
     interval: 15s
     metricRelabelings: []
     relabelings: []
-
-certgen:
-  serviceAccount:
-    # Specifies whether a ServiceAccount should be created
-    create: true
-    # The name of the ServiceAccount to use.  If not set and create is
-    # true, a name is generated using the fullname template
-    name: ""
-
-securityContext:
-  enabled: true
-  runAsNonRoot: true
-  runAsUser: 65534
-  runAsGroup: 65534

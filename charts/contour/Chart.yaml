@@ -17,6 +17,9 @@ keywords:
   - contour
 home: https://projectcontour.io
 icon: https://d33wubrfki0l68.cloudfront.net/b92d8706535e6f2b71f90645fe9ab7b418fb8ca8/ea52e/img/contour.svg
+sources:
+- https://github.com/projectcontour/contour
+- https://github.com/envoyproxy/envoy
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 version: 0.1.0
