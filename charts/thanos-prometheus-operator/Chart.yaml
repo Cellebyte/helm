@@ -14,7 +14,7 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 1.2.2
+version: 1.2.3
 keywords:
 - prometheus
 - alertmanager
@@ -27,7 +27,7 @@ sources:
 - https://github.com/thanos-io/thanos
 dependencies:
   - name: thanos
-    version: 0.1.7
+    version: 0.1.10
     repository:  https://charts.bitnami.com/bitnami
     condition: query.enabled
     enabled: true
@@ -37,7 +37,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: grafana.enabled
   - name: prometheus-operator
-    version: 0.13.1
+    version: 0.13.4
     repository: https://charts.bitnami.com/bitnami
     condition: operator.enabled
     alias: operator
