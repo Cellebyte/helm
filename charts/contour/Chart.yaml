@@ -22,7 +22,7 @@ sources:
 - https://github.com/envoyproxy/envoy
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.2
+version: 0.1.3
 maintainers:
   - name: cellebyte
     url: https://github.com/Cellebyte

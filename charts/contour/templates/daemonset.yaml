@@ -127,14 +127,14 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        automountServiceAccountToken: false
-        volumes:
-        - name: envoy-config
-          emptyDir: {}
-        - name: envoycert
-          secret:
-            secretName: envoycert
-        - name: cacert
-          secret:
-            secretName: cacert
-        restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+      - name: envoy-config
+        emptyDir: {}
+      - name: envoycert
+        secret:
+          secretName: envoycert
+      - name: cacert
+        secret:
+          secretName: cacert
+      restartPolicy: Always
