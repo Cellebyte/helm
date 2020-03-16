@@ -744,6 +744,10 @@ grafana:
     fileName: workload-total.json
   - configMapName: grafana-dashboard-coredns
     fileName: coredns.json
+  - configMapName: grafana-dashboard-contour
+    fileName: contour.json
+  - configMapName: grafana-dashboard-envoy
+    fileName: envoy.json
   ## Create datasources from a custom secret
   ## The secret must contain the files
   ##
