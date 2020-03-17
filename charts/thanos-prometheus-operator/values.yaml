@@ -480,10 +480,10 @@ query:
       enabled: true
       ## Sidecars service name to discover them using DNS discovery
       ##
-      sidecarsService: thanos-prometheus-operator-prometheus-thanos
-      ## Sidecars namespace to discover them using DNS discovery
+      sidecarsService: '{{ .Release.Name }}-prometheus-thanos'
+      ## Sidecars namespace to discover them using DNS discovery'
       ##
-      sidecarsNamespace: monitoring-system
+      sidecarsNamespace: '{{ .Release.Namespace }}'
 
     ## Querier Service Discovery Configuration
     ## Specify content for servicediscovery.yml

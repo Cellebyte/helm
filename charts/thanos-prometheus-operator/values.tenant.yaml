@@ -7,6 +7,6 @@ federation:
 prometheus_operator:
   prometheus:
     externalLabels:
-      customer: "example-customer"
-      cluster: "example-cluster"
+      federation_customer: "example-customer"
+      federation_cluster: "example-cluster"
     listenLocal: false
