@@ -81,7 +81,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(up{job=\"apiserver\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"})",
+          "expr": "sum(up{job=\"apiserver\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -149,28 +149,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"2..\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m]))",
+          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"2..\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "2xx",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"3..\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m]))",
+          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"3..\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "3xx",
           "refId": "B"
         },
         {
-          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"4..\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m]))",
+          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"4..\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "4xx",
           "refId": "C"
         },
         {
-          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"5..\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m]))",
+          "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"5..\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "5xx",
@@ -263,7 +263,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", verb!=\"WATCH\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (verb, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", verb!=\"WATCH\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (verb, le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{verb}}",
@@ -356,7 +356,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance, name)",
+          "expr": "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance, name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} {{name}}",
@@ -449,7 +449,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance, name)",
+          "expr": "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance, name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} {{name}}",
@@ -542,7 +542,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance, name, le))",
+          "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance, name, le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} {{name}}",
@@ -635,7 +635,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "etcd_helper_cache_entry_total{job=\"apiserver\", instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}",
+          "expr": "etcd_helper_cache_entry_total{job=\"apiserver\", instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -728,14 +728,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(etcd_helper_cache_hit_total{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance)",
+          "expr": "sum(rate(etcd_helper_cache_hit_total{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} hit",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(etcd_helper_cache_miss_total{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance)",
+          "expr": "sum(rate(etcd_helper_cache_miss_total{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} miss",
@@ -828,14 +828,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_get_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance, le))",
+          "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_get_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance, le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} get",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_add_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])) by (instance, le))",
+          "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_add_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])) by (instance, le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}} miss",
@@ -928,7 +928,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}",
+          "expr": "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -1021,7 +1021,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}[5m])",
+          "expr": "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}[5m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -1114,7 +1114,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "go_goroutines{job=\"apiserver\",instance=~\"$instance\", schiff_cluster=~\"^$s_cluster$\", schiff_customer=~\"^$s_customer\"}",
+          "expr": "go_goroutines{job=\"apiserver\",instance=~\"$instance\", federation_cluster=~\"^$f_cluster$\", federation_customer=~\"^$f_customer\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{instance}}",
@@ -1195,14 +1195,14 @@
           "value": "telemetry"
         },
         "datasource": "$datasource",
-        "definition": "label_values(apiserver_request_total, schiff_customer)",
+        "definition": "label_values(apiserver_request_total, federation_customer)",
         "hide": 0,
         "includeAll": false,
         "label": "Schiff Customer",
         "multi": false,
-        "name": "s_customer",
+        "name": "f_customer",
         "options": [],
-        "query": "label_values(apiserver_request_total, schiff_customer)",
+        "query": "label_values(apiserver_request_total, federation_customer)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1220,14 +1220,14 @@
           "value": "cluster-1"
         },
         "datasource": "$datasource",
-        "definition": "label_values(apiserver_request_total{schiff_customer=~\"^$s_customer$\"}, schiff_cluster)",
+        "definition": "label_values(apiserver_request_total{federation_customer=~\"^$f_customer$\"}, federation_cluster)",
         "hide": 0,
         "includeAll": false,
         "label": "Schiff Cluster",
         "multi": false,
-        "name": "s_cluster",
+        "name": "f_cluster",
         "options": [],
-        "query": "label_values(apiserver_request_total{schiff_customer=~\"^$s_customer$\"}, schiff_cluster)",
+        "query": "label_values(apiserver_request_total{federation_customer=~\"^$f_customer$\"}, federation_cluster)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1246,14 +1246,14 @@
           "value": "$__all"
         },
         "datasource": "$datasource",
-        "definition": "label_values(apiserver_request_total{job=\"apiserver\", schiff_cluster=~\"^$s_cluster$\"}, instance)",
+        "definition": "label_values(apiserver_request_total{job=\"apiserver\", federation_cluster=~\"^$f_cluster$\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": false,
         "name": "instance",
         "options": [],
-        "query": "label_values(apiserver_request_total{job=\"apiserver\", schiff_cluster=~\"^$s_cluster$\"}, instance)",
+        "query": "label_values(apiserver_request_total{job=\"apiserver\", federation_cluster=~\"^$f_cluster$\"}, instance)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1296,7 +1296,7 @@
     ]
   },
   "timezone": "",
-  "title": "Kubernetes / API server | Customer",
+  "title": "Kubernetes / API server | Federated",
   "uid": "3SCAaEuZz",
   "version": 9
 }

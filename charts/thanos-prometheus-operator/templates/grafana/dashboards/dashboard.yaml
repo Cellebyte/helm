@@ -1,0 +1,12 @@
+{{- if and .Values.grafana.dashboardsProvider.enabled .Values.grafana.enabled -}}
+{{- range $path, $_ := .Files.Glob "files/dashboards/default/**.json" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-{{ $path | trimSuffix ".json" | trimPrefix "files/dashboards/default/"}}
+data:
+  {{ $path | trimPrefix "files/dashboards/default/" }}: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
+{{- end }}
