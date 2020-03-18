@@ -27,7 +27,7 @@ sources:
 - https://github.com/thanos-io/thanos
 dependencies:
   - name: thanos
-    version: 0.1.10
+    version: 0.2.1
     repository:  https://charts.bitnami.com/bitnami
     condition: query.enabled
     enabled: true
