@@ -664,10 +664,11 @@ grafana:
   ##     subPath: file-name.extension (optional)
   ##     readOnly: true
   ##
-  extraConfigmaps: {
-
-  }
-
+  extraConfigmaps:
+  - name: grafana-dashboard-federation-apiserver
+    mountPath: /opt/bitnami/grafana/federation/apiserver.json
+    subPath: apiserver.json
+    readOnly: true
   ## Parameters to override the default grafana.ini and custom.ini files.
   ## It is needed to create a configmap or a secret containing the grafana.ini and custom.ini files.
   ##
@@ -684,8 +685,27 @@ grafana:
   dashboardsProvider:
     enabled: true
     ## ConfigMap with a custom provider file.
-    ## Important to set the Path to "/opt/bitnami/grafana/dashboards"
-    # configMapName:
+    ## Important to set the Path to "/opt/bitnami/grafana/federation"
+    configMapName: '{{ include "thanos-prometheus-operator.fullname" . }}-provider'
+    extraProviders:
+    - name: 'federation-provider'
+      # <int> org id. will default to orgId 1 if not specified
+      orgId: 1
+      # <string, required> name of the dashboard folder. Required
+      folder: Federation
+      # <string> folder UID. will be automatically generated if not specified
+      folderUid: ''
+      # <string, required> provider type. Required
+      type: file
+      # <bool> disable dashboard deletion
+      disableDeletion: true
+      # <bool> enable dashboard editing
+      editable: true
+      # <int> how often Grafana will scan for changed dashboards
+      updateIntervalSeconds: 10
+      options:
+        # <string, required> path to dashboard files on disk. Required
+        path: /opt/bitnami/grafana/federation
 
   ## Create dashboards from a custom configMap that contains the file.
   ## They will be mounted by the default dashboard provider if it is enabled
