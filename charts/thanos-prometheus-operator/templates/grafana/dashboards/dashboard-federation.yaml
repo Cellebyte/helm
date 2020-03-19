@@ -1,4 +1,4 @@
-{{- if and .Values.grafana.dashboardsProvider.enabled .Values.grafana.enabled -}}
+{{- if and .Values.grafana.dashboardsProvider.enabled .Values.grafana.enabled (not .Values.federation.enabled) -}}
 {{- range $path, $_ := .Files.Glob "files/dashboards/federation/**.json" }}
 ---
 apiVersion: v1
