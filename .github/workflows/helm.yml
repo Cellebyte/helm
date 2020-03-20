@@ -20,6 +20,12 @@ jobs:
         args: git submodule foreach --recursive 'git fetch --tags' && git submodule update --init --recursive
     - name: Move cert manager chart into charts dir
       run: mv external/cert-manager/deploy/charts/cert-manager charts/
+    - name: add crds directory
+      run: mkdir charts/cert-manager/crds/
+    - name: enrich with crds
+      uses: wei/curl@master
+      with:
+        args: -o charts/cert-manager/crds/00-crds.yaml  https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
     - name: Lint Helm Charts
       run: helm lint charts/*
     - name: Add Bitnami repository
