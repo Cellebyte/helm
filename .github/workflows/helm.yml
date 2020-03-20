@@ -16,12 +16,16 @@ jobs:
         version: v3.1.0
     - name: Get all submodule charts
       run: git submodule update --init --recursive
+    - name: Get all submodule tags
+      run: git submodule foreach --recursive 'git fetch --tags'
     - name: Move cert manager chart into charts dir
       run: mv external/cert-manager/deploy/charts/cert-manager charts/
     - name: add crds directory
       run: mkdir charts/cert-manager/crds/
     - name: enrich with crds
       run: curl -o charts/cert-manager/crds/00-crds.yaml https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
+    - name: Run bash script to update the chart version and the appVersion from version.txt
+      run: bash external.sh
     - name: Lint Helm Charts
       run: helm lint charts/*
     - name: Add Bitnami repository
