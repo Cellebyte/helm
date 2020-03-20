@@ -21,7 +21,7 @@ jobs:
     - name: Move cert manager chart into charts dir
       run: cp -a external/cert-manager/deploy/charts/cert-manager charts/
     - name: add crds directory
-      run: mkdir charts/cert-manager/crds/
+      run: mkdir -p charts/cert-manager/crds/
     - name: enrich with crds
       run: curl -o charts/cert-manager/crds/00-crds.yaml https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
     - name: Run bash script to update the chart version and the appVersion from version.txt
