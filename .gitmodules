@@ -1,4 +1,5 @@
-[submodule "tmp/certmanager"]
-	path = tmp/certmanager
+[submodule "external/cert-manager"]
+    path = external/cert-manager
     url = https://github.com/jetstack/cert-manager.git
     branch = v0.11.1
+    shallow = true
