@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - release
-      - certmanager
 
 jobs:
   build:
@@ -15,16 +14,12 @@ jobs:
       uses: Azure/setup-helm@v1
       with:
         version: v3.1.0
-    - name: create temp dir for submodules
-      run: mkdir tmp
     - name: Checkout submodules
       uses: srt32/git-actions@v0.0.3
       with:
         args: git submodule foreach --recursive 'git fetch --tags' && git submodule update --init --recursive
-    - name: check if submodule worked
-      run: ls -la && ls -la tmp/
     - name: Move cert manager chart into charts dir
-      run: mv tmp/cert-manager/deploy/charts/cert-manager charts/
+      run: mv external/cert-manager/deploy/charts/cert-manager charts/
     - name: Lint Helm Charts
       run: helm lint charts/*
     - name: Add Bitnami repository
