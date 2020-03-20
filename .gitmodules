@@ -1,4 +1,4 @@
-[submodule "cert-manager"]
-    path = tmp/cert-manager
+[submodule "tmp/certmanager"]
+	path = tmp/certmanager
     url = https://github.com/jetstack/cert-manager.git
     branch = v0.11.1
