@@ -15,10 +15,8 @@ jobs:
       uses: Azure/setup-helm@v1
       with:
         version: v3.1.0
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
-      with:
-        args: git submodule foreach --recursive 'git fetch --tags' && git submodule update --init --recursive
+    - name: Get all submodule charts
+      run: git submodule update --init --recursive
     - name: Move cert manager chart into charts dir
       run: mv external/cert-manager/deploy/charts/cert-manager charts/
     - name: add crds directory
