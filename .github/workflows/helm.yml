@@ -14,6 +14,10 @@ jobs:
       uses: Azure/setup-helm@v1
       with:
         version: v3.1.0
+    - name: Get all submodule charts
+      run: git submodule foreach -q --recursive 'branch="$(git config -f $toplevel/.gitmodules submodule.$name.branch)"; git checkout $branch'
+    - name: Move cert manager chart into charts dir
+      run: mv tmp/cert-manager/deploy/charts/cert-manager charts/
     - name: Lint Helm Charts
       run: helm lint charts/*
     - name: Add Bitnami repository
