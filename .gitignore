@@ -4,3 +4,4 @@ vendor/
 out.yaml
 *.tgz
 out.txt
+tmp
