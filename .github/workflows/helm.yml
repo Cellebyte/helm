@@ -17,8 +17,10 @@ jobs:
         version: v3.1.0
     - name: create temp dir for submodules
       run: mkdir tmp
-    - name: Get all submodule charts
-      run: git submodule foreach --recursive git submodule update --init
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init --recursive
     - name: check if submodule worked
       run: ls -la && ls -la tmp/
     - name: Move cert manager chart into charts dir
