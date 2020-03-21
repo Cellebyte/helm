@@ -30,7 +30,7 @@ operator:
     image:
       registry: quay.io
       repository: coreos/prometheus-operator
-      tag: v0.37.0
+      tag: v0.38.0
       pullPolicy: IfNotPresent
     serviceAccount:
       create: true

@@ -1,7 +1,7 @@
 apiVersion: v2
 name: thanos-prometheus-operator
 description: The prometheus-operator flavoured with a grain of thanos.
-appVersion: 0.37.0
+appVersion: 0.38.0
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
