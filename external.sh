@@ -15,7 +15,7 @@ do
         UNPREFIXED_VERSION=${UNPREFIXED_VERSION#"v"}
         git -C "${EXTERNAL_DIR}/${directory}" checkout "${VERSION}"
         bash "${CHARTS_DIR}/${directory}/setup.sh"
-        sed -i "s/^\(appVersion:\s*\).*/\1$UNPREFIXED_VERSION/" "${CHARTS_DIR}/${directory}/Chart.yaml"
+        sed -i "s/^\(appVersion:\s*\).*/\1$VERSION/" "${CHARTS_DIR}/${directory}/Chart.yaml"
         sed -i "s/^\(version:\s*\).*/\1$UNPREFIXED_VERSION/" "${CHARTS_DIR}/${directory}/Chart.yaml"
     fi
 done
