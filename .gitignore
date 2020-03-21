@@ -5,3 +5,6 @@ out.yaml
 *.tgz
 out.txt
 tmp
+charts/cert-manager/*
+!version.txt
+!setup.sh
