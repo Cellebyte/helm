@@ -53,7 +53,7 @@ spec:
         - name: METALLB_ML_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: memberlist
+              name: {{ include "metallb.fullname" . }}-memberlist
               key: secretkey
         ports:
         - name: metrics
