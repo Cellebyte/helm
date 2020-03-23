@@ -102,7 +102,7 @@ contour:
   image:
     registry: docker.io
     repository: projectcontour/contour
-    tag: v1.2.1
+    tag: v1.3.0
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
