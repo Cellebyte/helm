@@ -13,8 +13,8 @@ spec:
     metadata:
       labels: {{- include "metallb.labels" . | nindent 8 }}
         component: speaker
-      {{- if .Values.controller.podAnnotations }}
-      annotations: {{- toYaml .Values.controller.podAnnotations | nindent 8 }}
+      {{- if .Values.speaker.podAnnotations }}
+      annotations: {{- toYaml .Values.speaker.podAnnotations | nindent 8 }}
       {{- end }}
     spec:
 {{- include "metallb.speaker.imagePullSecrets" . | nindent 6 }}
@@ -22,14 +22,14 @@ spec:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
       serviceAccountName: {{ include "metallb.speakerServiceAccountName" . }}
-      terminationGracePeriodSeconds: 0
+      terminationGracePeriodSeconds: 2
       hostNetwork: true
       containers:
       - name: speaker
         image: {{ include "metallb.speaker.image" . }}
         imagePullPolicy: {{ .Values.speaker.image.pullPolicy }}
         args:
-        - --port=7472
+        - --port={{ .Values.speaker.daemonset.hostPorts.metrics }}
         - --config={{ include "metallb.configMapName" . }}
         env:
         - name: METALLB_NODE_NAME
@@ -40,22 +40,49 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        - name: METALLB_ML_BIND_ADDR
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: METALLB_ML_LABELS
+          value: "app=metallb,component=speaker"
+        - name: METALLB_ML_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: METALLB_ML_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: memberlist
+              key: secretkey
         ports:
-        - name: http-metrics
-          containerPort: 7472
-      {{- if .Values.livenessProbe.enabled }}
+        - name: metrics
+          containerPort: {{ .Values.speaker.daemonset.hostPorts.metrics }}
+      {{- if .Values.speaker.livenessProbe.enabled }}
         livenessProbe:
           httpGet:
             path: /metrics
-            port: http-metrics
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.livenessProbe.successThreshold }}
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            port: metrics
+          initialDelaySeconds: {{ .Values.speaker.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.speaker.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.speaker.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.speaker.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.speaker.livenessProbe.failureThreshold }}
       {{- end }}
-        resources:
-{{ toYaml .Values.speaker.resources | indent 10 }}
+      {{- if .Values.speaker.readinessProbe.enabled }}
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: metrics
+          initialDelaySeconds: {{ .Values.speaker.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.speaker.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.speaker.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.speaker.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.speaker.readinessProbe.failureThreshold }}
+      {{- end }}
+      {{- if .Values.speaker.resources }}
+        resources: {{- toYaml .Values.speaker.resources | nindent 10 }}
+      {{- end }}
         securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
@@ -67,15 +94,13 @@ spec:
             - NET_RAW
             - SYS_ADMIN
       nodeSelector:
+      {{- if .Values.controller.nodeSelector }}
+{{- include "metallb.tplValue" (dict "value" .Values.controller.nodeSelector "context" $) | indent 8 }}
+      {{- end }}
         "beta.kubernetes.io/os": linux
-        {{- with .Values.speaker.nodeSelector }}
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.speaker.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.speaker.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+      {{- if .Values.speaker.affinity }}
+      affinity: {{- include "metallb.tplValue" (dict "value" .Values.speaker.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.speaker.tolerations}}
+      tolerations: {{- include "metallb.tplValue" (dict "value" .Values.speaker.tolerations "context" $) | nindent 8 }}
+      {{- end }}
