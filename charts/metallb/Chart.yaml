@@ -15,7 +15,7 @@ home: https://metallb.universe.tf
 icon: https://metallb.universe.tf/images/logo.png
 sources:
   - https://github.com/metallb/metallb
-version: 0.1.4
+version: 0.1.5
 maintainers:
   - name: cellebyte
     url: https://github.com/Cellebyte
