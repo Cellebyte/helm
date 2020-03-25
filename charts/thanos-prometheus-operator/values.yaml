@@ -128,9 +128,7 @@ operator:
 
     listenLocal: false
 
-    externalLabels:
-      customer: "<customer>"
-      cluster: "<cluster>"
+    externalLabels: {}
     
     additionalScrapeConfigsExternal: false
     ## ConfigMaps that should be mounted into the Prometheus Pods
