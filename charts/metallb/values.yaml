@@ -45,7 +45,7 @@ prometheus:
   # Prometheus Operator service monitors
   serviceMonitor:
     # enable support for Prometheus Operator
-    enabled: true
+    enabled: false
     # Job label for scrape target
     jobLabel: metallb
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
@@ -109,6 +109,7 @@ controller:
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
   podAnnotations: {}
+
   serviceAccount:
     # Specifies whether a ServiceAccount should be created
     create: true
@@ -130,12 +131,14 @@ controller:
   ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
   ##
   livenessProbe:
+    enabled: true
     failureThreshold: 3
     initialDelaySeconds: 10
     periodSeconds: 10
     successThreshold: 1
     timeoutSeconds: 1
   readinessProbe:
+    enabled: true
     failureThreshold: 3
     initialDelaySeconds: 10
     periodSeconds: 10
@@ -212,12 +215,14 @@ speaker:
   ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
   ##
   livenessProbe:
+    enabled: true
     failureThreshold: 3
     initialDelaySeconds: 10
     periodSeconds: 10
     successThreshold: 1
     timeoutSeconds: 1
   readinessProbe:
+    enabled: true
     failureThreshold: 3
     initialDelaySeconds: 10
     periodSeconds: 10
