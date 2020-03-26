@@ -3,7 +3,7 @@ entries:
   cert-manager:
   - apiVersion: v1
     appVersion: v0.11.1
-    created: "2020-03-26T12:51:18.845240735Z"
+    created: "2020-03-26T12:51:30.408853688Z"
     dependencies:
     - condition: cainjector.enabled
       name: cainjector
@@ -30,7 +30,7 @@ entries:
   contour:
   - apiVersion: v2
     appVersion: 1.3.0
-    created: "2020-03-26T12:51:18.856905871Z"
+    created: "2020-03-26T12:51:30.418567132Z"
     description: Contour Ingress controller for Kubernetes
     digest: ae3b51ee328d4013164f5ffe60dfeac910192f1911f03c9f96da37fc38c48aee
     home: https://projectcontour.io
@@ -52,7 +52,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.3.0
-    created: "2020-03-26T12:51:18.855056449Z"
+    created: "2020-03-26T12:51:30.417077541Z"
     description: Contour Ingress controller for Kubernetes
     digest: 614b4a1d35ba3b3014ae3316e07a40de8b8d9a4ff24bad9e9710e22c43916768
     home: https://projectcontour.io
@@ -74,7 +74,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.2.1
-    created: "2020-03-26T12:51:18.853554032Z"
+    created: "2020-03-26T12:51:30.415205052Z"
     description: Contour Ingress controller for Kubernetes
     digest: 8ca063130c42ad8aa292dd6a87ce664c398400798bf2d34639afa63325ca45a1
     home: https://projectcontour.io
@@ -96,7 +96,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 1.2.1
-    created: "2020-03-26T12:51:18.851472108Z"
+    created: "2020-03-26T12:51:30.414014659Z"
     description: Contour Ingress controller for Kubernetes
     digest: f4da5ecd790b4405d4af3507d2fa6922c705bbba2cf1d7f7c12c9234e4101f95
     home: https://projectcontour.io
@@ -118,7 +118,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.2.1
-    created: "2020-03-26T12:51:18.849662287Z"
+    created: "2020-03-26T12:51:30.412863065Z"
     description: Contour Ingress controller for Kubernetes
     digest: baeb83b5290257d36fa86df2710ced236ced4314e81bcfcb01ad48016e34a198
     home: https://projectcontour.io
@@ -140,7 +140,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.2.1
-    created: "2020-03-26T12:51:18.848353971Z"
+    created: "2020-03-26T12:51:30.411139275Z"
     description: Contour Ingress controller for Kubernetes
     digest: 3421882db9327b4288d957854256f90e56e3226e642ace49e03bfcde5ed43072
     home: https://projectcontour.io
@@ -162,7 +162,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.2.1
-    created: "2020-03-26T12:51:18.846769653Z"
+    created: "2020-03-26T12:51:30.409972382Z"
     digest: 9771d17d539deeeeeb56e1a973e1adbbd5d9ff705aebc9554b52c8209636f7b9
     home: https://projectcontour.io
     icon: https://d33wubrfki0l68.cloudfront.net/b92d8706535e6f2b71f90645fe9ab7b418fb8ca8/ea52e/img/contour.svg
@@ -183,8 +183,33 @@ entries:
     version: 0.1.0
   metallb:
   - apiVersion: v2
+    appVersion: 0.9.3
+    created: "2020-03-26T12:51:30.427787079Z"
+    description: The Metal LB for Kubernetes
+    digest: 79f8e3a33717d1480d56170035ee9f49e5990ba7c0f66b66f4e2878df826f011
+    home: https://metallb.universe.tf
+    icon: https://metallb.universe.tf/images/logo.png
+    keywords:
+    - load-balancer
+    - balancer
+    - lb
+    - bgp
+    - arp
+    - vrrp
+    - vip
+    maintainers:
+    - name: cellebyte
+      url: https://github.com/Cellebyte
+    name: metallb
+    sources:
+    - https://github.com/metallb/metallb
+    type: application
+    urls:
+    - https://cellebyte.github.io/helm/metallb-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
     appVersion: 0.9.2
-    created: "2020-03-26T12:51:18.866496583Z"
+    created: "2020-03-26T12:51:30.425996989Z"
     description: The Metal LB for Kubernetes
     digest: b9edfdab673c5178f7a1aa853101fca3a62f243c36a3eca069109a40f49b2903
     home: https://metallb.universe.tf
@@ -209,7 +234,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: 0.9.2
-    created: "2020-03-26T12:51:18.865362069Z"
+    created: "2020-03-26T12:51:30.424988395Z"
     description: The Metal LB for Kubernetes
     digest: 80b61d7c0aa910f9a1210551cac16d3bb8051c0ab96cdd91d22a76cc17309ca4
     home: https://metallb.universe.tf
@@ -234,7 +259,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: 0.9.2
-    created: "2020-03-26T12:51:18.864310057Z"
+    created: "2020-03-26T12:51:30.423966401Z"
     description: The Metal LB for Kubernetes
     digest: 0490b6705382bdba8cdb1588efe0f402f2727635f97cf29ea59a144fd4def9c5
     home: https://metallb.universe.tf
@@ -259,7 +284,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: 0.9.2
-    created: "2020-03-26T12:51:18.863302645Z"
+    created: "2020-03-26T12:51:30.422917407Z"
     description: The Metal LB for Kubernetes
     digest: 3925331bb0fe7de37f59d9e9ede56155cdc63f90b0e81ea2348b397b94ec80c8
     home: https://metallb.universe.tf
@@ -284,7 +309,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 0.9.2
-    created: "2020-03-26T12:51:18.862194932Z"
+    created: "2020-03-26T12:51:30.421878213Z"
     description: The Metal LB for Kubernetes
     digest: 00da7f39b5675f74c723aedd9df23bed59cd4e52e16c9316a1ebc8b26b335a30
     home: https://metallb.universe.tf
@@ -309,7 +334,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 0.8.3
-    created: "2020-03-26T12:51:18.86112422Z"
+    created: "2020-03-26T12:51:30.420944419Z"
     description: The Metal LB for Kubernetes
     digest: aac1de316f5dc3f9043ab18f8ff505e7f282c84951db8d380b59ed0e51b1596e
     home: https://metallb.universe.tf
@@ -334,7 +359,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 0.8.3
-    created: "2020-03-26T12:51:18.860198209Z"
+    created: "2020-03-26T12:51:30.420178323Z"
     description: The Metal LB for Kubernetes
     digest: ed47b556a0cd22c3102b6d310527b649547dfe9722056d36d77d104725faa59c
     home: https://metallb.universe.tf
@@ -356,7 +381,7 @@ entries:
     - https://cellebyte.github.io/helm/metallb-0.1.1.tgz
     version: 0.1.1
   - apiVersion: v2
-    created: "2020-03-26T12:51:18.858340688Z"
+    created: "2020-03-26T12:51:30.419274628Z"
     description: The Metal LB for Kubernetes
     digest: 7d8c3ba4506e297bee42639181991954c305c4e1a21e67e7e342e5466d7a0690
     name: metallb
@@ -367,7 +392,7 @@ entries:
   thanos-prometheus-operator:
   - apiVersion: v2
     appVersion: 0.38.0
-    created: "2020-03-26T12:51:19.137395199Z"
+    created: "2020-03-26T12:51:30.668867588Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -406,7 +431,7 @@ entries:
     version: 1.2.10
   - apiVersion: v2
     appVersion: 0.38.0
-    created: "2020-03-26T12:51:19.373443287Z"
+    created: "2020-03-26T12:51:30.870864123Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -445,7 +470,7 @@ entries:
     version: 1.2.9
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.334155327Z"
+    created: "2020-03-26T12:51:30.847310159Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -484,7 +509,7 @@ entries:
     version: 1.2.8
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.303944583Z"
+    created: "2020-03-26T12:51:30.822576402Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -523,7 +548,7 @@ entries:
     version: 1.2.7
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.277632231Z"
+    created: "2020-03-26T12:51:30.798502341Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -562,7 +587,7 @@ entries:
     version: 1.2.6
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.247390584Z"
+    created: "2020-03-26T12:51:30.773879283Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -601,7 +626,7 @@ entries:
     version: 1.2.5
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.219022925Z"
+    created: "2020-03-26T12:51:30.750284819Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -640,7 +665,7 @@ entries:
     version: 1.2.4
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.189680868Z"
+    created: "2020-03-26T12:51:30.72580706Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -679,7 +704,7 @@ entries:
     version: 1.2.3
   - apiVersion: v2
     appVersion: 0.37.0
-    created: "2020-03-26T12:51:19.165631545Z"
+    created: "2020-03-26T12:51:30.696733528Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -717,7 +742,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v2
-    created: "2020-03-26T12:51:19.107721209Z"
+    created: "2020-03-26T12:51:30.645300524Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -745,7 +770,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v2
-    created: "2020-03-26T12:51:19.078474062Z"
+    created: "2020-03-26T12:51:30.622748454Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -773,7 +798,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v2
-    created: "2020-03-26T12:51:19.048249916Z"
+    created: "2020-03-26T12:51:30.600603582Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -801,7 +826,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.1.4.tgz
     version: 1.1.4
   - apiVersion: v2
-    created: "2020-03-26T12:51:19.019470516Z"
+    created: "2020-03-26T12:51:30.577714914Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -829,7 +854,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-1.1.3.tgz
     version: 1.1.3
   - apiVersion: v2
-    created: "2020-03-26T12:51:18.987736893Z"
+    created: "2020-03-26T12:51:30.556173938Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -857,7 +882,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.3.tgz
     version: 0.1.3
   - apiVersion: v2
-    created: "2020-03-26T12:51:18.957332039Z"
+    created: "2020-03-26T12:51:30.532409276Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -885,7 +910,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
-    created: "2020-03-26T12:51:18.929979821Z"
+    created: "2020-03-26T12:51:30.492893504Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -913,7 +938,7 @@ entries:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.1.tgz
     version: 0.1.1
   - apiVersion: v2
-    created: "2020-03-26T12:51:18.898605256Z"
+    created: "2020-03-26T12:51:30.456729212Z"
     dependencies:
     - alias: query
       condition: query.enabled
@@ -940,4 +965,4 @@ entries:
     urls:
     - https://cellebyte.github.io/helm/thanos-prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2020-03-26T12:51:18.840354878Z"
+generated: "2020-03-26T12:51:30.404626613Z"
