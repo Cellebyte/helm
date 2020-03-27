@@ -17,7 +17,8 @@ spec:
     metadata:
       labels: {{- include "contour.labels" . | nindent 8 }}
         component: envoy
-    spec: {{- include "envoy.imagePullSecrets" . | nindent 6 }}
+    spec:
+{{- include "envoy.imagePullSecrets" . | indent 6 }}
       {{- if .Values.envoy.affinity }}
       affinity: {{- include "contour.tplValue" (dict "value" .Values.envoy.nodeSelector "context" $) | nindent 8 }}
       {{- end }}

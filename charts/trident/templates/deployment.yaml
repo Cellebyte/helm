@@ -1,0 +1,142 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "trident.fullname" . }}-csi
+  labels: {{- include "trident.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {{- include "trident.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "trident.labels" . | nindent 8 }}
+      {{- if .Values.trident.podAnnotations }}
+      annotations: {{- toYaml .Values.trident.podAnnotations | nindent 8 }}
+      {{- end }}
+    spec:
+{{- include "trident.imagePullSecrets" . | indent 6 }}
+      serviceAccount: {{ include "trident.ServiceAccountName" . }}
+      containers:
+      - name: trident-main
+        image: {{ include "trident.image" . }}
+        imagePullPolicy: {{ .Values.trident.image.pullPolicy }}
+        ports:
+        - containerPort: 8443
+        - containerPort: 8001
+        command:
+        - /usr/local/bin/trident_orchestrator
+        args:
+        - "--crd_persistence"
+        - "--k8s_pod"
+        - "--https_rest"
+        - "--https_port=8443"
+        - "--csi_node_name=$(KUBE_NODE_NAME)"
+        - "--csi_endpoint=$(CSI_ENDPOINT)"
+        - "--csi_role=controller"
+        - "--log_format=text"
+        - "--address=127.0.0.1"
+        - "--metrics"
+        #- -debug
+        {{- if .Values.trident.livenessProbe.enabled }}
+        livenessProbe:
+          exec:
+            command:
+            - tridentctl
+            - -s
+            - "127.0.0.1:8000"
+            - version
+          failureThreshold: {{ .Values.trident.livenessProbe.failureThreshold }}
+          initialDelaySeconds: {{ .Values.trident.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.trident.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.trident.livenessProbe.timeoutSeconds }}
+        {{- end }}
+        env:
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: CSI_ENDPOINT
+          value: unix://plugin/csi.sock
+        - name: TRIDENT_SERVER
+          value: "127.0.0.1:8000"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /plugin
+        - name: certs
+          mountPath: /certs
+          readOnly: true
+      - name: csi-provisioner
+        image: {{ include "csi.provisioner.image" . }}
+        imagePullPolicy: {{ .Values.csi.provisioner.image.pullPolicy }}
+        args:
+        - "--v=2"
+        - "--timeout=600s"
+        - "--csi-address=$(ADDRESS)"
+        env:
+        - name: ADDRESS
+          value: /var/lib/csi/sockets/pluginproxy/csi.sock
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+      - name: csi-attacher
+        image: {{ include "csi.attacher.image" . }}
+        imagePullPolicy: {{ .Values.csi.attacher.image.pullPolicy }}
+        args:
+        - "--v=2"
+        - "--timeout=60s"
+        - "--retry-interval-start=10s"
+        - "--csi-address=$(ADDRESS)"
+        env:
+        - name: ADDRESS
+          value: /var/lib/csi/sockets/pluginproxy/csi.sock
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+      - name: csi-resizer
+        image: {{ include "csi.resizer.image" . }}
+        imagePullPolicy: {{ .Values.csi.resizer.image.pullPolicy }}
+        args:
+        - "--v=2"
+        - "--csiTimeout=300s"
+        - "--csi-address=$(ADDRESS)"
+        env:
+        - name: ADDRESS
+          value: /var/lib/csi/sockets/pluginproxy/csi.sock
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+      - name: csi-snapshotter
+        image: {{ include "csi.snapshotter.image" . }}
+        imagePullPolicy: {{ .Values.csi.snapshotter.image.pullPolicy }}
+        args:
+        - "--v=2"
+        - "--timeout=300s"
+        - "--csi-address=$(ADDRESS)"
+        env:
+        - name: ADDRESS
+          value: /var/lib/csi/sockets/pluginproxy/csi.sock
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+      nodeSelector:
+        kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+      {{- if .Values.trident.nodeSelector }}
+{{- include "trident.tplValue" (dict "value" .Values.trident.nodeSelector "context" $) | indent 8 }}
+      {{- end }}
+      {{- if .Values.trident.affinity }}
+      affinity: {{- include "contour.tplValue" (dict "value" .Values.trident.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.trident.tolerations }}
+      tolerations: {{- include "contour.tplValue" (dict "value" .Values.trident.tolerations "context" $) | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: socket-dir
+        emptyDir:
+      - name: certs
+        secret:
+          secretName: trident-csi

@@ -1,7 +1,7 @@
 apiVersion: v2
-name: contour
-description: Contour Ingress controller for Kubernetes
-appVersion: 1.3.0
+name: trident
+description: The NetAPP Trident CSI Provider
+
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -11,18 +11,26 @@ appVersion: 1.3.0
 # a dependency of application charts to inject those utilities and functions into the rendering
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-keywords:
-  - ingress
-  - envoy
-  - contour
-home: https://projectcontour.io
-icon: https://d33wubrfki0l68.cloudfront.net/b92d8706535e6f2b71f90645fe9ab7b418fb8ca8/ea52e/img/contour.svg
-sources:
-- https://github.com/projectcontour/contour
-- https://github.com/envoyproxy/envoy
+
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.2.2
+version: 0.1.0
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: 20.01.1
+
+keywords:
+  - CSI
+  - NFS
+  - Trident
+  - NetAPP
+  - Storage
+home: https://www.netapp.com/
+icon: https://raw.githubusercontent.com/NetApp/trident/master/logo/trident.png
+sources:
+- https://github.com/NetApp/trident
+- https://netapp-trident.readthedocs.io/en/stable-v20.01/
 maintainers:
   - name: cellebyte
     url: https://github.com/Cellebyte
