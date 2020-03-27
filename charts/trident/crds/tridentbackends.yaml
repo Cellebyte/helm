@@ -1,0 +1,33 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: tridentbackends.trident.netapp.io
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .backendName
+    description: The backend name
+    name: Backend
+    priority: 0
+    type: string
+  - JSONPath: .backendUUID
+    description: The backend UUID
+    name: Backend UUID
+    priority: 0
+    type: string
+  group: trident.netapp.io
+  names:
+    categories:
+    - trident
+    - trident-internal
+    kind: TridentBackend
+    plural: tridentbackends
+    shortNames:
+    - tbe
+    - tbackend
+    singular: tridentbackend
+  scope: Namespaced
+  version: v1
+  versions:
+  - name: v1
+    served: true
+    storage: true
