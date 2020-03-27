@@ -20,7 +20,8 @@ spec:
     metadata:
       labels: {{- include "contour.labels" . | nindent 8 }}
         component: contour
-    spec: {{- include "contour.imagePullSecrets" . | nindent 6 }}
+    spec:
+{{- include "contour.imagePullSecrets" . | indent 6 }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -31,13 +32,10 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       {{- if .Values.contour.affinity }}
-{{- include "contour.tplValue" (dict "value" .Values.contour.nodeSelector "context" $) | indent 8 }}
+{{- include "contour.tplValue" (dict "value" .Values.contour.affinity "context" $) | indent 8 }}
       {{- end }}
       {{- if .Values.contour.nodeSelector }}
       nodeSelector: {{- include "contour.tplValue" (dict "value" .Values.contour.nodeSelector "context" $) | nindent 8 }}
-      {{- end }}
-      {{- if .Values.contour.affinity }}
-      affinity: {{- include "contour.tplValue" (dict "value" .Values.contour.affinity "context" $) | nindent 8 }}
       {{- end }}
       {{- if .Values.contour.tolerations}}
       tolerations: {{- include "contour.tplValue" (dict "value" .Values.contour.tolerations "context" $) | nindent 8 }}
