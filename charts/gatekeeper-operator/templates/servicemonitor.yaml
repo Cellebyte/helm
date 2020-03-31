@@ -3,11 +3,11 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: gatekeeper-webhook-servicemonitor
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
 spec:
   jobLabel: jobLabel
   selector:
-    matchLabels: {{- include "gatekeeper.matchLabels" . | nindent 6 }}
+    matchLabels: {{- include "gatekeeper-operator.matchLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

@@ -1,13 +1,13 @@
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
   name: gatekeeper-validating-webhook-configuration
 webhooks:
 - clientConfig:
     caBundle: Cg==
     service:
-      name: {{ include "gatekeeper.fullname" . }}
+      name: {{ include "gatekeeper-operator.fullname" . }}
       namespace: {{ .Release.Namespace }}
       path: /v1/admit
   failurePolicy: Ignore
@@ -31,7 +31,7 @@ webhooks:
 - clientConfig:
     caBundle: Cg==
     service:
-      name: {{ include "gatekeeper.fullname" . }}
+      name: {{ include "gatekeeper-operator.fullname" . }}
       namespace: {{ .Release.Namespace }}
       path: /v1/admitlabel
   failurePolicy: Fail

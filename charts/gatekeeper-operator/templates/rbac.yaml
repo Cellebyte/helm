@@ -2,8 +2,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper.fullname" . }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 rules:
 - apiGroups:
   - ""
@@ -21,8 +21,8 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper.fullname" . }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 rules:
 - apiGroups:
   - '*'
@@ -114,27 +114,27 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper.fullname" . }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ include "gatekeeper.fullname" . }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "gatekeeper.serviceAccountName" . }}
+  name: {{ include "gatekeeper-operator.serviceAccountName" . }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper.fullname" . }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "gatekeeper.fullname" . }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "gatekeeper.serviceAccountName" . }}
+  name: {{ include "gatekeeper-operator.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 {{- end }}

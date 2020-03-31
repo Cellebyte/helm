@@ -16,6 +16,19 @@ replicaCount: 1
 rbac:
   create: true
 
+## The intervall in whicht the audit job is running.
+##
+auditInterval: 60
+
+## The limit of constraint violations
+##
+constraintViolationsLimit: 20
+
+## Do the audit from cache.
+##
+auditFromCache: false
+
+
 image:
   registry: quay.io
   repository: open-policy-agent/gatekeeper
