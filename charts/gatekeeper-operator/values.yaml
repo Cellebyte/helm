@@ -16,10 +16,23 @@ replicaCount: 1
 rbac:
   create: true
 
+## The intervall in whicht the audit job is running.
+##
+auditInterval: 60
+
+## The limit of constraint violations
+##
+constraintViolationsLimit: 20
+
+## Do the audit from cache.
+##
+auditFromCache: false
+
+
 image:
   registry: quay.io
   repository: open-policy-agent/gatekeeper
-  tag: v3.1.0-beta.6
+  tag: v3.1.0-beta.7
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images

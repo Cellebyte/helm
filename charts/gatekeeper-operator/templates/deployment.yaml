@@ -1,24 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels: {{- include "gatekeeper.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper.fullname" . }}
+  labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+  name: {{ include "gatekeeper-operator.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
-    matchLabels: {{- include "gatekeeper.matchLabels" . | nindent 6 }}
+    matchLabels: {{- include "gatekeeper-operator.matchLabels" . | nindent 6 }}
   template:
     metadata:
-      labels: {{- include "gatekeeper.labels" . | nindent 8 }}
+      labels: {{- include "gatekeeper-operator.labels" . | nindent 8 }}
       {{- if .Values.podAnnotations }}
       annotations: {{- toYaml .Values.podAnnotations | nindent 8 }}
       {{- end }}
     spec:
-{{- include "gatekeeper.imagePullSecrets" . | indent 6 }}
+{{- include "gatekeeper-operator.imagePullSecrets" . | indent 6 }}
       containers:
       - name: manager
         args:
-        - --audit-interval=30
+        - --audit-interval={{ .Values.auditInterval }}
+        - --constraint-violations-limit={{ .Values.constraintViolationsLimit }}
+        - --audit-from-cache={{ .Values.auditFromCache }}
         - --port=8443
         - --logtostderr
         - --exempt-namespace={{ .Release.Namespace }}
@@ -34,7 +36,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        image: {{ include "gatekeeper.image" . }}
+        image: {{ include "gatekeeper-operator.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
@@ -83,15 +85,15 @@ spec:
           name: cert
           readOnly: true
       {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "metallb.tplValue" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      nodeSelector: {{- include "gatekeeper-operator.tplValue" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
       {{- end }}
       {{- if .Values.affinity }}
-      affinity: {{- include "gatekeeper.tplValue" (dict "value" .Values.affinity "context" $) | nindent 8 }}
+      affinity: {{- include "gatekeeper-operator.tplValue" (dict "value" .Values.affinity "context" $) | nindent 8 }}
       {{- end }}
       {{- if .Values.tolerations}}
-      tolerations: {{- include "gatekeeper.tplValue" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
+      tolerations: {{- include "gatekeeper-operator.tplValue" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "gatekeeper.serviceAccountName" . }}
+      serviceAccountName: {{ include "gatekeeper-operator.serviceAccountName" . }}
       terminationGracePeriodSeconds: 60
       volumes:
       - name: cert
