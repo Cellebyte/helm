@@ -13,6 +13,9 @@
 
 replicaCount: 1
 
+rbac:
+  create: true
+
 image:
   registry: quay.io
   repository: open-policy-agent/gatekeeper
@@ -72,3 +75,30 @@ affinity: {}
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 ##
 podAnnotations: {}
+
+prometheus:
+  # Prometheus Operator service monitors
+  serviceMonitor:
+    # enable support for Prometheus Operator
+    enabled: true
+    # Job label for scrape target
+    jobLabel: gatekeeper
+    # Scrape interval. If not set, the Prometheus default scrape interval is used.
+    interval: ""
+    metricRelabelings: []
+    relabelings: []
+
+livenessProbe:
+  enabled: true
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+readinessProbe:
+  enabled: true
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
