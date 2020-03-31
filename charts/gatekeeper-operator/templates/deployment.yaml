@@ -19,7 +19,8 @@ spec:
       - name: manager
         args:
         - --audit-interval={{ .Values.auditInterval }}
-        - --
+        - --constraint-violations-limit={{ .Values.constraintViolationsLimit }}
+        - --audit-from-cache={{ .Values.auditFromCache }}
         - --port=8443
         - --logtostderr
         - --exempt-namespace={{ .Release.Namespace }}
