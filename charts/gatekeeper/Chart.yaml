@@ -1,8 +1,8 @@
 apiVersion: v2
 name: gatekeeper
-description: The Gatekeeper deployment Chart.
+description: The Gatekeeper OpenPolicyAgent for Kubernetes.
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: 3.1.0-beta.6
 keywords:
   - gatekeeper
