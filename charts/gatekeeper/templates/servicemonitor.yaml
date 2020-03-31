@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "gatekeeper.fullname" . }}
+  name: gatekeeper-webhook-servicemonitor
   labels: {{- include "gatekeeper.labels" . | nindent 4 }}
 spec:
   jobLabel: jobLabel

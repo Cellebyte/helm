@@ -2,7 +2,7 @@ apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
   labels: {{- include "gatekeeper.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper.fullname" . }}
+  name: gatekeeper-validating-webhook-configuration
 webhooks:
 - clientConfig:
     caBundle: Cg==
