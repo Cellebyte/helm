@@ -83,4 +83,4 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: {{ include "gatekeeper.fullname" . }}
+          secretName: gatekeeper-webhook-server-cert
