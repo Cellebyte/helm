@@ -1,0 +1,16 @@
+apiVersion: v2
+name: gatekeeper
+description: The Gatekeeper deployment Chart.
+type: application
+version: 0.1.0
+appVersion: 3.1.0-beta.6
+keywords:
+  - gatekeeper
+  - openpolicyagent
+home: https://www.openpolicyagent.org/
+icon: https://d33wubrfki0l68.cloudfront.net/a5bf5cefceefdba8ab3a9297fddab246355169a2/4a6f4/img/logo-white.png
+sources:
+  - https://github.com/open-policy-agent/gatekeeper
+maintainers:
+  - name: cellebyte
+    url: https://github.com/Cellebyte
