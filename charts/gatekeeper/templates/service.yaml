@@ -7,4 +7,10 @@ spec:
   ports:
   - port: 443
     targetPort: 8443
+  {{- if .Values.prometheus.serviceMonitor.enabled }}
+  - protocol: TCP
+    port: 8888
+    name: metrics
+    targetPort: 8888
+  {{- end }}
   selector: {{- include "gatekeeper.matchLabels" . | nindent 4 }}
