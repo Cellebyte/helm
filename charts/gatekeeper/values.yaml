@@ -80,7 +80,7 @@ prometheus:
   # Prometheus Operator service monitors
   serviceMonitor:
     # enable support for Prometheus Operator
-    enabled: true
+    enabled: false
     # Job label for scrape target
     jobLabel: gatekeeper
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
