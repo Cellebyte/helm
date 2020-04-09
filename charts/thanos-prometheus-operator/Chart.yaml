@@ -27,17 +27,17 @@ sources:
 - https://github.com/thanos-io/thanos
 dependencies:
   - name: thanos
-    version: 0.2.2
+    version: 0.3.2
     repository:  https://charts.bitnami.com/bitnami
     condition: query.enabled
     enabled: true
     alias: query
   - name: grafana
-    version: 1.4.0
+    version: 1.4.1
     repository: https://charts.bitnami.com/bitnami
     condition: grafana.enabled
   - name: prometheus-operator
-    version: 0.13.8
+    version: 0.15.1
     repository: https://charts.bitnami.com/bitnami
     condition: operator.enabled
     alias: operator
