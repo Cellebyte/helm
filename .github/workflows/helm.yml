@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - release
+      - k8sDashboard
 
 jobs:
   build:
