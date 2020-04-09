@@ -93,7 +93,7 @@ operator:
       image:
         registry: quay.io
         repository: coreos/prometheus-config-reloader
-        tag: v0.37.0
+        tag: v0.38.0
   prometheus:
     enabled: true
 
