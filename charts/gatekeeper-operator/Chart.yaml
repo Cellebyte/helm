@@ -3,7 +3,7 @@ name: gatekeeper-operator
 description: The Gatekeeper OpenPolicyAgent for Kubernetes.
 type: application
 version: 1.0.2
-appVersion: 3.1.0-beta.7
+appVersion: 3.1.0-beta.8
 keywords:
   - gatekeeper
   - openpolicyagent
