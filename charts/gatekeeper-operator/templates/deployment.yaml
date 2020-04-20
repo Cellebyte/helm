@@ -21,6 +21,7 @@ spec:
         - --audit-interval={{ .Values.auditInterval }}
         - --constraint-violations-limit={{ .Values.constraintViolationsLimit }}
         - --audit-from-cache={{ .Values.auditFromCache }}
+        - --log-level={{ .Values.logLevel }}
         - --port=8443
         - --logtostderr
         - --exempt-namespace={{ .Release.Namespace }}

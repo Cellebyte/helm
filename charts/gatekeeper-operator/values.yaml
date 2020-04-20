@@ -28,6 +28,8 @@ constraintViolationsLimit: 20
 ##
 auditFromCache: false
 
+## Define the logLevel
+logLevel: INFO
 
 image:
   registry: quay.io
