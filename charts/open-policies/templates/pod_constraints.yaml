@@ -1,0 +1,39 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sBannedImageTags
+metadata:
+  name: ban-latest-tag
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    tags:
+      - "latest"
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepositories
+metadata:
+ name: cluster-repo-is-harbor
+spec:
+ match:
+   kinds:
+     - apiGroups: [""]
+       kinds: ["Pod"]
+ parameters:
+   repos:
+     - "10.27.50.252"
+     - "harbor.sce-dcn.net"
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPPrivilegedContainer
+metadata:
+  name: psp-privileged-container
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    excludedNamespaces:
+      - kube-system
+      - metallb-system

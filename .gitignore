@@ -6,5 +6,7 @@ out.yaml
 out.txt
 tmp
 charts/cert-manager/*
+charts/open-policies/crds/*
 !version.txt
 !setup.sh
+!.gitkeep
