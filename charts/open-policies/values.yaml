@@ -4,3 +4,11 @@
 
 nameOverride: ""
 fullnameOverride: ""
+
+allowedRegistries:
+- docker.io
+- quay.io
+
+excludedNamespaces:
+- kube-system
+- metallb-system

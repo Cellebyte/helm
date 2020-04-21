@@ -10,20 +10,23 @@ spec:
   parameters:
     tags:
       - "latest"
+{{- if .Values.allowedRegistries }}
 ---
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sAllowedRepositories
 metadata:
  name: cluster-repo-is-harbor
 spec:
- match:
-   kinds:
-     - apiGroups: [""]
-       kinds: ["Pod"]
- parameters:
-   repos:
-     - "10.27.50.252"
-     - "harbor.sce-dcn.net"
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    repos:
+    {{- range .Values.allowedRegistries }}
+      - {{ . }}
+    {{- end }}
+{{- end }}
 ---
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sPSPPrivilegedContainer
@@ -34,6 +37,9 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
+  {{- if .Values.excludedNamespaces }}
     excludedNamespaces:
-      - kube-system
-      - metallb-system
+    {{- range .Values.excludedNamespaces }}
+      - {{ . }}
+    {{- end }}
+  {{- end }}
