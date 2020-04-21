@@ -47,6 +47,8 @@ spec:
 
         accept_users("RunAsAny", provided_user) {true}
 
+        accept_users("MustRunAsNonRoot", provided_user) = res {res := provided_user != 0}
+
         accept_users("MustRunAs", provided_user) = res  {
           ranges := input.parameters.runAsGroup.ranges
           matching := {1 | provided_user >= ranges[j].min; provided_user <= ranges[j].max}
