@@ -24,6 +24,7 @@ webhooks:
     operations:
     - CREATE
     - UPDATE
+    - DELETE
     resources:
     - '*'
   sideEffects: None
@@ -44,6 +45,7 @@ webhooks:
     operations:
     - CREATE
     - UPDATE
+    - DELETE
     resources:
     - namespaces
   sideEffects: None
