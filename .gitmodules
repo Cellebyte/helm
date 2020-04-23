@@ -3,10 +3,7 @@
     url = https://github.com/jetstack/cert-manager.git
     branch = v0.11.1
     shallow = true
-[submodule "external/open-policies"]
-	path = external/open-policies
-	url = https://github.com/open-policy-agent/gatekeeper.git
-    shallow = true
 [submodule "external/gatekeeper-templates"]
 	path = external/gatekeeper-templates
-	url = https://github.com/open-policy-agent/gatekeeper.git
+    url = https://github.com/open-policy-agent/gatekeeper.git
+    shallow = true
