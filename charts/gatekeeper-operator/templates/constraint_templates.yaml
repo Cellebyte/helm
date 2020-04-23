@@ -1,4 +1,0 @@
-{{- range $path, $_ := .Files.Glob "files/**/**/template.yaml" }}
----
-{{ $.Files.Get $path }}
-{{- end }}
