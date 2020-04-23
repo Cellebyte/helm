@@ -7,7 +7,6 @@
 	path = external/open-policies
 	url = https://github.com/open-policy-agent/gatekeeper.git
     shallow = true
-[submodule "charts/external/gatekeeper-templates"]
-	path = charts/external/gatekeeper-templates
+[submodule "external/gatekeeper-templates"]
+	path = external/gatekeeper-templates
 	url = https://github.com/open-policy-agent/gatekeeper.git
-    shallow =  true
