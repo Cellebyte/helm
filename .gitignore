@@ -6,8 +6,8 @@ out.yaml
 out.txt
 tmp
 charts/cert-manager/*
-charts/open-policies/files/general/*
-charts/open-policies/files/pod-security-policy/*
+charts/gatekeeper-operator/files/general/*
+charts/gatekeeper-operator/files/pod-security-policy/*
 !version.txt
 !setup.sh
 !.gitkeep

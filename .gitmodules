@@ -5,5 +5,4 @@
     shallow = true
 [submodule "external/gatekeeper-operator"]
 	path = external/gatekeeper-operator
-	url = https://github.com/open-policy-agent/gatekeeper
-    shallow=true
+	url = https://github.com/open-policy-agent/gatekeeper.git
