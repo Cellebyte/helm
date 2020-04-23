@@ -1,0 +1,6 @@
+dependencies:
+- name: gatekeeper-templates
+  repository: file://../gatekeeper-templates/
+  version: 0.0.1
+digest: sha256:56fb4896d62573dac93c0c7950a62d89b7675ed0a0b03f35ce2b4e4c4b2dac66
+generated: "2020-04-23T18:20:24.767794727+02:00"

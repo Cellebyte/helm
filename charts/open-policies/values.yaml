@@ -5,6 +5,9 @@
 nameOverride: ""
 fullnameOverride: ""
 
+templates:
+  enabled: true
+
 allowedRegistries:
 - docker.io
 - quay.io
