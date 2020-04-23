@@ -16,7 +16,7 @@ spec:
 ---
 # Only allow our registries.
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sAllowedRepositories
+kind: K8sAllowedRepos
 metadata:
  name: cluster-repo-is-harbor
 spec:
