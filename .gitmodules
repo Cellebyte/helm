@@ -4,6 +4,6 @@
     branch = v0.11.1
     shallow = true
 [submodule "external/open-policies"]
-	path = external/gatekeeper-operator
+	path = external/open-policies
 	url = https://github.com/open-policy-agent/gatekeeper.git
     shallow = true
