@@ -51,24 +51,6 @@ spec:
 ---
 # Customer: Deny any root container.
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPAllowedGroups
-metadata:
-  name: psp-pods-allowed-groups-ranges
-spec:
-  match:
-    kinds:
-      - apiGroups: [""]
-        kinds: ["Pod"]
-    excludedNamespaces:
-    {{- range .Values.excludedNamespaces }}
-      - {{ . }}
-    {{- end }}
-  parameters:
-    runAsGroup:
-      rule: MustRunAsNonRoot
----
-# Customer: Deny any root container.
-apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sPSPAllowedSupplementalGroups
 metadata:
   name: psp-pods-allowed-supplemental-groups-ranges
@@ -84,22 +66,6 @@ spec:
   parameters:
     supplementalGroups:
       rule: MustRunAsNonRoot
----
-# fsgroup must not be root.
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPFSGroup
-metadata:
-  name: psp-fsgroup
-spec:
-  match:
-    kinds:
-      - apiGroups: [""]
-        kinds: ["Pod"]
-  parameters:
-    rule: "MustRunAs" #"MustRunAs" #"MayRunAs", "RunAsAny"
-    ranges:
-    - min: 1
-      max: 65535
 ---
 # Deny privilegeEscalation: true
 apiVersion: constraints.gatekeeper.sh/v1beta1
