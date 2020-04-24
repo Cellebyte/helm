@@ -1,0 +1,24 @@
+# Default values for rbac.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+# The environment the cluster is in.
+# Keep track on the mapping.
+
+env: production   # production, reference, testing
+
+users:
+  emergencys:
+    - "oidc:emergency"
+  m2ms:
+    - "oidc:m2m"
+  powerusers:
+    - "oidc:admin"
+    - "oidc:customer-poweruser"
+  collaborators:
+    - "oidc:customer-collaborator"
+  readonlys:
+    - "oidc:customer-readonly"

@@ -1,0 +1,36 @@
+
+Keep in mind the following mapping is applied with
+your configuration.
+
+
+  powerusers: 
+  {{- range .Values.users.emergencys }}
+    - {{ . }}
+  {{- end }}
+  {{- range .Values.users.m2ms }}
+    - {{ . }}
+  {{- end }}
+  {{- if eq .Values.env "testing" }}
+  {{- range .Values.users.powerusers }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
+  {{- if eq .Values.env "testing" }}
+  collaborators:
+  {{- range .Values.users.powerusers }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
+  readonlys:
+  {{- range .Values.users.readonlys }}
+    - {{ . }}
+  {{- end }}
+  {{- if or (eq .Values.env "production") (eq .Values.env "reference") }}
+  {{- range .Values.users.powerusers }}
+    - {{ . }}
+  {{- end }}
+  {{- range .Values.users.collaborators }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
+

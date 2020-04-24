@@ -1,0 +1,61 @@
+# All tenant's groups have readonly rights 
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "rbac.fullname" . }}-readonly
+  labels: {{ include "rbac.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: readonly
+subjects:
+{{- if or (eq .Values.env "production") (eq .Values.env "reference") }}
+{{- range .Values.users.powerusers}}
+- kind: Group
+  name: {{ . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- range .Values.users.collaborators }}
+- kind: Group
+  name: {{ . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
+{{- range .Values.users.readonlys }}
+- kind: Group
+  name: {{ . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- if eq .Values.env "testing" }}
+---
+# kind: ClusterRoleBinding
+# apiVersion: rbac.authorization.k8s.io/v1
+# metadata:
+#   name: {{ include "rbac.fullname" . }}-collaborator
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: collaborator
+# subjects:
+# {{- range .Values.users.collaborators }}
+# - kind: Group
+#   name: {{ . }}
+#   apiGroup: rbac.authorization.k8s.io
+# {{- end }}
+# ---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "rbac.fullname" . }}-poweruser
+  labels: {{ include "rbac.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: poweruser
+subjects:
+{{- range .Values.users.powerusers}}
+- kind: Group
+  name: {{ . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
