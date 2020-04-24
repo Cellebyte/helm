@@ -19,25 +19,3 @@ subjects:
   name: {{ . }}
   apiGroup: rbac.authorization.k8s.io
 {{- end }}
----
-# schiffAdmins group get readonly user rights on all clusters by default
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: {{ include "rbac.fullname" . }}-admin
-  labels: {{ include "rbac.labels" . | nindent 4 }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: readonly
-subjects:
-{{- range .Values.users.emergencys }}
-- kind: Group
-  name: {{ . }}
-  apiGroup: rbac.authorization.k8s.io
-{{- end }}
-{{- range .Values.users.m2ms }}
-- kind: Group
-  name: {{ . }}
-  apiGroup: rbac.authorization.k8s.io
-{{- end }}
