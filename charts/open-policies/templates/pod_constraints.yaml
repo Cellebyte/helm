@@ -24,6 +24,7 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
+    excludedNamespaces:
   parameters:
     repos:
     {{- range .Values.allowedRegistries }}
@@ -121,7 +122,7 @@ spec:
   parameters:
     hostNetwork: true
     min: 80
-    max: 8443
+    max: 9100
 ---
 # Customer: Deny all hostNetwork Traffic.
 apiVersion: constraints.gatekeeper.sh/v1beta1

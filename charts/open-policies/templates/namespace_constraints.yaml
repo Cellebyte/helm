@@ -7,6 +7,10 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Namespace"]
+    excludedNamespaces:
+    {{- range .Values.excludedNamespaces }}
+      - {{ . }}
+    {{- end }}
   parameters:
     message: "All namespaces must have an `owner` label with the prefix of your @example.com email address (e.g. if your email address is peter.beispiel@example.com than you label `owner` should have value `peter.beispiel`)"
     labels:
