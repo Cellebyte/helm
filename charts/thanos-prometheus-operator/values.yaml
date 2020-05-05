@@ -662,11 +662,7 @@ grafana:
   ##     subPath: file-name.extension (optional)
   ##     readOnly: true
   ##
-  extraConfigmaps:
-  - name: grafana-dashboard-federation-apiserver
-    mountPath: /opt/bitnami/grafana/federation/apiserver.json
-    subPath: apiserver.json
-    readOnly: true
+  
   ## Parameters to override the default grafana.ini and custom.ini files.
   ## It is needed to create a configmap or a secret containing the grafana.ini and custom.ini files.
   ##
