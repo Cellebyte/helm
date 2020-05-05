@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels: {{- include "gatekeeper-operator.labels" . | nindent 4 }}
-  name: {{ include "gatekeeper-operator.fullname" . }}
+  name: gatekeeper-webhook-service
 spec:
   ports:
   - port: 443

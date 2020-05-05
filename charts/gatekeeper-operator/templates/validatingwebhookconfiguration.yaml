@@ -7,7 +7,7 @@ webhooks:
 - clientConfig:
     caBundle: Cg==
     service:
-      name: {{ include "gatekeeper-operator.fullname" . }}
+      name: gatekeeper-webhook-service
       namespace: {{ .Release.Namespace }}
       path: /v1/admit
   failurePolicy: Ignore
@@ -32,7 +32,7 @@ webhooks:
 - clientConfig:
     caBundle: Cg==
     service:
-      name: {{ include "gatekeeper-operator.fullname" . }}
+      name: gatekeeper-webhook-service
       namespace: {{ .Release.Namespace }}
       path: /v1/admitlabel
   failurePolicy: Fail
