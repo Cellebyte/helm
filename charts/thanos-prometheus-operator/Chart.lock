@@ -1,12 +1,12 @@
 dependencies:
 - name: thanos
   repository: https://charts.bitnami.com/bitnami
-  version: 0.3.2
+  version: 0.5.3
 - name: grafana
   repository: https://charts.bitnami.com/bitnami
-  version: 1.4.1
+  version: 1.5.2
 - name: prometheus-operator
   repository: https://charts.bitnami.com/bitnami
-  version: 0.15.1
-digest: sha256:cb78bec4405dcec7aaa3e2f8869d7e9072227f7d4fb706eb06c5b037ce4061eb
-generated: "2020-04-09T14:16:54.766739487+02:00"
+  version: 0.15.4
+digest: sha256:feae40f1308590e8e6c256dc6efa0f38071fe3965a26cc8e45a4c211e7638ea1
+generated: "2020-05-05T15:39:43.951146166+02:00"
