@@ -627,10 +627,15 @@ grafana:
   updateStrategy:
     type: RollingUpdate
 
-  admin:
-    user: "admin"
-    password: "admin"
-
+  # admin:
+  #   user: "admin"
+  #   password: "admin"
+  ini: |
+    [server]
+    root_url = https://grafana.{{ .Values.federation.ingress.baseFQDN }}
+    [security]
+    diables_initial_admin_creation = true
+    disable_gravatar = true
   ## Grafana plugins that will be installed
   ## Specify plugins as a list separated by commas ( you will need to scape them when specifying from command line )
   ## Example:
@@ -662,11 +667,7 @@ grafana:
   ##     subPath: file-name.extension (optional)
   ##     readOnly: true
   ##
-  extraConfigmaps:
-  - name: grafana-dashboard-federation-apiserver
-    mountPath: /opt/bitnami/grafana/federation/apiserver.json
-    subPath: apiserver.json
-    readOnly: true
+
   ## Parameters to override the default grafana.ini and custom.ini files.
   ## It is needed to create a configmap or a secret containing the grafana.ini and custom.ini files.
   ##
@@ -674,8 +675,6 @@ grafana:
     useGrafanaIniFile: true
     grafanaIniSecret: grafana-config
     useCustomIniFile: false
-    customIniConfigMap:
-    customIniSecret:
 
   ## Create dasboard provider to load dashboards, a default one is created to load
   ## dashboards from "/opt/bitnami/grafana/dashboards"
@@ -684,7 +683,8 @@ grafana:
     enabled: true
     ## ConfigMap with a custom provider file.
     ## Important to set the Path to "/opt/bitnami/grafana/federation"
-    configMapName: '{{ include "thanos-prometheus-operator.fullname" . }}-provider'
+    configMapName: |
+      {{ include "thanos-prometheus-operator.fullname" . }}-provider
     extraProviders:
     - name: 'federation-provider'
       # <int> org id. will default to orgId 1 if not specified

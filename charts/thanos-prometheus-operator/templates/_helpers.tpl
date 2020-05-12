@@ -66,3 +66,16 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "thanos-prometheus-operator.pod" -}}
 {{ printf "prometheus-%s-prometheus-%d" (include "thanos-prometheus-operator.fullname" .root) .extra }}
 {{- end -}}
+
+{{/*
+Renders a value that contains template.
+Usage:
+{{ include "thanos-prometheus-operator.tplValue" ( dict "value" .Values.path.to.the.Value "context" $) }}
+*/}}
+{{- define "thanos-prometheus-operator.tplValue" -}}
+    {{- if typeIs "string" .value }}
+        {{- tpl .value .context }}
+    {{- else }}
+        {{- tpl (.value | toYaml) .context }}
+    {{- end }}
+{{- end -}}
