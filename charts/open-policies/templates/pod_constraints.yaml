@@ -25,6 +25,9 @@ spec:
       - apiGroups: [""]
         kinds: ["Pod"]
     excludedNamespaces:
+    {{- range .Values.excludedNamespaces }}
+      - {{ . }}
+    {{- end }}
   parameters:
     repos:
     {{- range .Values.allowedRegistries }}
