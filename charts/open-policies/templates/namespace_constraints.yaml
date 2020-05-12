@@ -8,6 +8,9 @@ spec:
       - apiGroups: [""]
         kinds: ["Namespace"]
     excludedNamespaces:
+      - kube-public
+      - kube-node-lease
+      - default
     {{- range .Values.excludedNamespaces }}
       - {{ . }}
     {{- end }}
