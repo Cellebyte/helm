@@ -78,6 +78,10 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
+    excludedNamespaces:
+    {{- range .Values.excludedNamespaces }}
+      - {{ . }}
+    {{- end }}
 ---
 # Customer: Deny privileged: true
 apiVersion: constraints.gatekeeper.sh/v1beta1
@@ -104,6 +108,10 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
+    excludedNamespaces:
+    {{- range .Values.excludedNamespaces }}
+      - {{ . }}
+    {{- end }}
 ---
 # ControlPlane: allowed hostNetwork ports
 apiVersion: constraints.gatekeeper.sh/v1beta1
