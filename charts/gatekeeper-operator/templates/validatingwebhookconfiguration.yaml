@@ -24,7 +24,9 @@ webhooks:
     operations:
     - CREATE
     - UPDATE
+{{- if .Values.admissionOnDelete }}
     - DELETE
+{{- end }}
     resources:
     - '*'
   sideEffects: None
