@@ -53,24 +53,6 @@ spec:
     runAsUser:
       rule: MustRunAsNonRoot
 ---
-# Customer: Deny any root container.
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSPAllowedSupplementalGroups
-metadata:
-  name: psp-pods-allowed-supplemental-groups-ranges
-spec:
-  match:
-    kinds:
-      - apiGroups: [""]
-        kinds: ["Pod"]
-    excludedNamespaces:
-    {{- range .Values.excludedNamespaces }}
-      - {{ . }}
-    {{- end }}
-  parameters:
-    supplementalGroups:
-      rule: MustRunAsNonRoot
----
 # Deny privilegeEscalation: true
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sPSPAllowPrivilegeEscalationContainer
@@ -173,6 +155,7 @@ spec:
     - emptyDir
     - projected
     - secret
+    - nfs
     - downwardAPI
     - persistentVolumeClaim
     - flexVolume #required for allowedFlexVolumes
@@ -198,6 +181,7 @@ spec:
     - emptyDir
     - projected
     - secret
+    - nfs
     - downwardAPI
     - persistentVolumeClaim
     - hostPath #required for allowedHostPaths
