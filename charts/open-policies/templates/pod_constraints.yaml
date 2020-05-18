@@ -173,6 +173,7 @@ spec:
     - emptyDir
     - projected
     - secret
+    - nfs
     - downwardAPI
     - persistentVolumeClaim
     - flexVolume #required for allowedFlexVolumes
@@ -196,6 +197,7 @@ spec:
     # - "*" # * may be used to allow all volume types
     - configMap
     - emptyDir
+    - nfs
     - projected
     - secret
     - downwardAPI
