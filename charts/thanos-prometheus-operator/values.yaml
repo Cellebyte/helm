@@ -441,6 +441,8 @@ operator:
     replicaCount: 2
     serviceMonitor:
       enabled: true
+      honorLabels: true
+      jobLabel: "app.kubernetes.io/name"
     hostNetwork: false
 
   ## Component scraping the kube-apiserver
